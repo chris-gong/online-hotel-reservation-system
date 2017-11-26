@@ -4,9 +4,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Test</title>
+<title>Hotel Reservation System</title>
 </head>
 <body>
-hey there
+	<form>
+		Username: <br>
+		<input type = "text" name = "username"> <br>
+		
+		Password: <br>
+		<input type = "text" name = "password"> <br>
+	
+		<input type = "submit">
+		
+		<br> Don't have an account? Click <a href = "register.jsp" = >here</a> to register!
+		
+	</form>
 </body>
 </html>
