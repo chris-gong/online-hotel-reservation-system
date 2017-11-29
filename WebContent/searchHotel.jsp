@@ -13,34 +13,59 @@
             });
         </script>
 </head>
+
+
 <body>
-<form method="post" action="InfoCheck">
-	Country:
-	<select name="country">
-		<option></option>
-		<option>Brazil</option>
-	</select> State/City:
-	<select name="state">
-		<option></option>
-		<option>Brazil</option>
-	</select>
 
-	<br></br> Room Type:
-	<select name="rtype">
-		<option></option>
-		<option>Brazil</option>
-	</select>
+<div class="ccms_form_element cfdiv_custom" id="style_container_div">
 
-	<br></br>
 
-	
-		<label>Check in Date:</label> <input type="Date" name="inDate" /><br>
-		<label>Check out Date:</label> <input type="Date" name="outDate" /><br> <input
-			type="submit" />
-	</form>
+<label>Country:</label><select size="1" id="beerStyle" class=" validate['required']" title="" type="select" name="style">
+<option value="">Choose a country</option>
+<option value="America">America</option>
+<option value="France">France</option>
+<option value="India">India</option>
+</select><div class="clear"></div><div id="error-message-style"></div></div>
 
-	
+<div id="America"  class="style-sub-1"  style="display: none;" name="stylesub1" onchange="ChangeDropdowns(this.value)">
+  <label>What state in America?</label>
+    <select>
+      <option value="">-Choose state-</option> 
+      <option value="NJ">NJ</option>
+      <option value="NY">NY</option>
+      <option value="California">California/option>
+      <option value="Texas">Texas</option>
+    </select>
+</div>
+<div id="India"  class="style-sub-1"  style="display: none;" name="stylesub1" onchange="ChangeDropdowns(this.value)">
+  <label>Which state in India?</label>
+    <select>
+    <option value="">-Choose stater-</option>
+      <option value="Gujurat">American Lager</option>
+      <option value="Something">Somethingr</option>
+      <option value="European Lager">European Lager</option>
+      <option value="German Lager">German Lager</option>
+      <option value="Japanese Lager">Japanese Lager</option>
+    </select>
+</div>
+<div id="France"  class="style-sub-1"  style="display: none;" name="stylesub1" onchange="ChangeDropdowns(this.value)">
+  <label>Which state in France?</label> 
+    <select>
+    <option value="">-Choose state</option>
+      <option value="Idk states">Test</option>
+      <option value="Herbed / Spiced Beer">Herbed / Spiced Beer</option>
+      <option value="Smoked Beer">Smoked Beer</option>
+    </select>
+</div><div class="clear"></div><div id="error-message-style-sub-1"></div></div>
 
+
+<script>
+$("#beerStyle").change ( function () {
+    var targID  = $(this).val ();
+    $("div.style-sub-1").hide ();
+    $('#' + targID).show ();
+} )
+</script>
 
 </body>
 </html>
