@@ -7,16 +7,12 @@
 <title>Search Hotel</title>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<script>
-            $(function () {
-                $("#datepicker").datepicker();
-            });
-        </script>
 </head>
 
 
 <body>
 
+<form>
 <div class="ccms_form_element cfdiv_custom" id="style_container_div">
 
 
@@ -67,5 +63,40 @@ $("#beerStyle").change ( function () {
 } )
 </script>
 
+
+<script>
+  $( function() {
+    $( "#checkindate" ).datepicker();
+  } );
+  </script>
+  
+  CheckinDate: <input type="text" id="checkindate">
+  <br>
+
+<script>
+  $( function() {
+    $( "#checkoutdate" ).datepicker();
+  } );
+  </script>
+  
+  CheckoutDate: <input type="text" id="checkoutdate">
+  
+  <br>
+  Room type: 
+  <select name = "roomType">
+  	<option>Single</option>
+  	<option>Double</option>
+  	<option>Triple</option>
+  	<option>Quad</option>
+  	<option>Queen</option>
+  	<option>King</option>
+  	<option>Twin</option>
+  	<option>Double-double</option>
+  	<option>Studio</option>
+  </select>
+  
+  <br>
+  <input type = "submit">
+</form>
 </body>
 </html>
