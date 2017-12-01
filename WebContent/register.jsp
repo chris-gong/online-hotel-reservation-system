@@ -9,11 +9,13 @@
 <body>
 
 Register here!
-	<form id= "registerinfo" class = "cmxform">
-		Name: (at least 2 characters) <br>
-		<input type = "text" name = "rname" minlength = "2" required>
+	<form id= "registerinfo" class = "cmxform" method="post" action="RegisterServlet">
+		First Name: (at least 2 characters) <br>
+		<input type = "text" name = "rfname" minlength = "2" required>
 		<br>
-		
+		Last Name: (at least 2 characters) <br>
+		<input type = "text" name = "rlname" minlength = "2" required>
+		<br>
 		Email:<br>
 		<input type = "email" name = "remail" required>
 		<br>
