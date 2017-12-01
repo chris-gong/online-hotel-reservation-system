@@ -94,13 +94,14 @@ public class RegisterServlet extends HttpServlet {
 			String emailCheck = "select email from users where email ='" + email + "'";
 			ResultSet eResult = s.executeQuery(emailCheck);
 			try {
-				System.out.println(eResult.isClosed());
 				if (!eResult.next()) {
 					Statement s2 = conn.createStatement();
 					String insertUser = "insert into users values('" + email + "','" + fname + "','" + lname + "','"
-							+ password + "','0','" + phone + "')";
-					System.out.println("about to insert");
+							+ password + "','0','" + phone + "','" +address +"')";
 					s2.executeUpdate(insertUser);
+					request.setAttribute("message", "Account successfully registered");
+					//response.sendRedirect("index.jsp");
+					request.getRequestDispatcher("/register.jsp").forward(request, response);
 				}else {
 					System.out.println("dup email");
 					response.sendRedirect("register.jsp");

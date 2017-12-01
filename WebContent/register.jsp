@@ -37,6 +37,12 @@ Register here!
 	<script>
 		$(#registerinfo).validate();
 	</script>
+	<%
+	String test =(String)request.getAttribute("message");
+	out.print(test);
+	
+	
+	%>
 	
 </body>
 
