@@ -75,7 +75,6 @@ public class RegisterServlet extends HttpServlet {
 				// invalid phone number
 				request.setAttribute("message", "Phone number must only contain numbers");
 				request.getRequestDispatcher("/register.jsp").forward(request, response);
-				response.sendRedirect("register.jsp");
 			}
 
 			// check if email is already in database.
@@ -95,7 +94,6 @@ public class RegisterServlet extends HttpServlet {
 				} else {
 					request.setAttribute("message", "This email already exists");
 					request.getRequestDispatcher("/register.jsp").forward(request, response);
-					response.sendRedirect("register.jsp");
 				}
 
 			} catch (SQLException e) {

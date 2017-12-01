@@ -13,7 +13,7 @@
 
 <body>
 
-	<form method="post" action="InfoCheck">
+	<form method="post" action="RoomLookup">
 		<div class="ccms_form_element cfdiv_custom" id="style_container_div">
 
 

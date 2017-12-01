@@ -15,13 +15,13 @@ import javax.servlet.http.HttpServletResponse;
  * Servlet implementation class InfoCheck
  */
 @WebServlet("/InfoCheck")
-public class InfoCheck extends HttpServlet {
+public class RoomLookupServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public InfoCheck() {
+    public RoomLookupServlet() {
         super();
         // TODO Auto-generated constructor stub
     }

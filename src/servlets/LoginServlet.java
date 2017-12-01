@@ -73,7 +73,6 @@ public class LoginServlet extends HttpServlet {
 				if(!rs.next()) {
 					request.setAttribute("message", "Invalid Email");
 					request.getRequestDispatcher("/index.jsp").forward(request, response);
-					response.sendRedirect("index.jsp");
 				}
 				else {
 					String s=rs.getString("password");
@@ -86,7 +85,6 @@ public class LoginServlet extends HttpServlet {
 					}else{
 						request.setAttribute("message", "Invalid Password");
 						request.getRequestDispatcher("/index.jsp").forward(request, response);
-						response.sendRedirect("index.jsp");
 					}
 				}
 			}catch (SQLException e ) {
