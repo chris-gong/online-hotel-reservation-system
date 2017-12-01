@@ -7,7 +7,7 @@
 <title>Hotel Reservation System</title>
 </head>
 <body>
-	<form>
+	<form method="post" action="LoginServlet">
 		Username: <br>
 		<input type = "text" name = "username"> <br>
 		

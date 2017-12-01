@@ -12,7 +12,7 @@
 
 <body>
 
-<form>
+<form method="post" action="InfoCheck">
 <div class="ccms_form_element cfdiv_custom" id="style_container_div">
 
 

@@ -2,8 +2,18 @@
 package servlets ;
 import java.sql.*;
 
-public class FirstExample {
-   // JDBC driver name and database URL
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class FirstExample extends HttpServlet {
+   /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+// JDBC driver name and database URL
    static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
    static final String DB_URL = "jdbc:mysql://localhost/cs336";
 
