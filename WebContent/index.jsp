@@ -8,8 +8,8 @@
 </head>
 <body>
 	<form method="post" action="LoginServlet">
-		Username: <br>
-		<input type = "text" name = "username"> <br>
+		Email: <br>
+		<input type = "text" name = "email"> <br>
 		
 		Password: <br>
 		<input type = "password" name = "password"> <br>

@@ -61,13 +61,13 @@ public class LoginServlet extends HttpServlet {
 			// STEP 3: Open a connection
 			System.out.println("Connecting to database...");
 			conn = DriverManager.getConnection(DB_URL, USER, PASS);
-			String u_name = request.getParameter("username");
+			String email = request.getParameter("email");
 			String password = request.getParameter("password");
 
 			// STEP 4: Execute a query
 			stmt = conn.createStatement();
 			String sql;
-			sql = "SELECT password from users where username='" + u_name + "'";
+			sql = "SELECT password from users where email='" + email + "'";
 			ResultSet rs = stmt.executeQuery(sql);
 			try {
 				if(!rs.next()) {
