@@ -82,7 +82,7 @@ public class RegisterServlet extends HttpServlet {
 			Statement s = conn.createStatement();
 			String emailCheck = "select email from users where email ='" + email + "'";
 			ResultSet eResult = s.executeQuery(emailCheck);
-
+			System.out.println("Before checking results");
 			try {
 				if (!eResult.next()) {
 					stmt = conn.createStatement();
@@ -99,7 +99,7 @@ public class RegisterServlet extends HttpServlet {
 				}
 
 			} catch (SQLException e) {
-				// e.printStackTrace();
+				e.printStackTrace();
 			}
 
 		} catch (Exception e) {
