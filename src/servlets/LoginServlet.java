@@ -71,20 +71,23 @@ public class LoginServlet extends HttpServlet {
 			ResultSet rs = stmt.executeQuery(sql);
 			try {
 				if(!rs.next()) {
+					request.setAttribute("message", "Invalid Email");
+					request.getRequestDispatcher("/index.jsp").forward(request, response);
 					response.sendRedirect("index.jsp");
 				}
 				else {
 					String s=rs.getString("password");
 					if(s.equals(password)) {
-						response.sendRedirect("searchHotel.jsp");
+						response.sendRedirect("home.jsp");//changed from searchHotel to home.jsp
 					}else{
+						request.setAttribute("message", "Invalid Password");
+						request.getRequestDispatcher("/index.jsp").forward(request, response);
 						response.sendRedirect("index.jsp");
 					}
 				}
 			}catch (SQLException e ) {
 				//e.printStackTrace();
 			}
-			//if username doesnt exist
 			
 		} catch (Exception e) {
 			// Handle errors for Class.forName

@@ -6,6 +6,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Hotel Reservation System</title>
 </head>
+
+<%-- Allow user to enter valid email and password to login --%>
+
 <body>
 	<form method="post" action="LoginServlet">
 		Email: <br> <input type="text" name="email"> <br>
@@ -21,8 +24,6 @@
 	if(test!=null){
 		out.print(test);
 	}
-	
-	
 	%>
 </body>
 </html>

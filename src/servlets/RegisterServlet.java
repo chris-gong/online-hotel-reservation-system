@@ -80,36 +80,39 @@ public class RegisterServlet extends HttpServlet {
 			// in the future we can send a web request to email checker.net
 			if (!email.contains("@")) {
 				// invalid email
-				// check if email exists
 			}
 			if (password.length() < 6) {
 				// passowrd must be greater than 6
 			}
 			if (!(phone.matches("[0-9]+") && phone.length() > 9)) {
 				// invalid phone number
+				request.setAttribute("message", "Phone number must only contain numbers");
+				request.getRequestDispatcher("/register.jsp").forward(request, response);
+				response.sendRedirect("register.jsp");
 			}
 
 			// check if email is already in database.
 			Statement s = conn.createStatement();
 			String emailCheck = "select email from users where email ='" + email + "'";
 			ResultSet eResult = s.executeQuery(emailCheck);
+
 			try {
 				if (!eResult.next()) {
-					Statement s2 = conn.createStatement();
+					stmt = conn.createStatement();
 					String insertUser = "insert into users values('" + email + "','" + fname + "','" + lname + "','"
-							+ password + "','0','" + phone + "','" +address +"')";
-					s2.executeUpdate(insertUser);
+							+ password + "','0','" + phone + "','" + address + "')";
+					stmt.executeUpdate(insertUser);
 					request.setAttribute("message", "Account successfully registered");
-					//response.sendRedirect("index.jsp");
 					request.getRequestDispatcher("/index.jsp").forward(request, response);
-				}else {
-					System.out.println("dup email");
+
+				} else {
+					request.setAttribute("message", "This email already exists");
+					request.getRequestDispatcher("/register.jsp").forward(request, response);
 					response.sendRedirect("register.jsp");
 				}
 
 			} catch (SQLException e) {
-				//if email is in database
-				//e.printStackTrace();
+				// e.printStackTrace();
 			}
 
 		} catch (Exception e) {

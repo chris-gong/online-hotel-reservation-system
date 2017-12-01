@@ -6,6 +6,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Register</title>
 </head>
+<%-- User registers an account --%>
+
 <body>
 
 Register here!
@@ -38,7 +40,12 @@ Register here!
 		$(#registerinfo).validate();
 	</script>
 	
-	
+	<%
+	String test =(String)request.getAttribute("message");
+	if(test!=null){
+		out.print(test);
+	}
+	%>
 </body>
 
 
