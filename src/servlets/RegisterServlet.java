@@ -70,20 +70,7 @@ public class RegisterServlet extends HttpServlet {
 			String password = request.getParameter("rpassword");
 			String phone = request.getParameter("rphone");
 
-			// verify input
-			if (fname.length() < 2) {
-				// invalid length
-			}
-			if (lname.length() < 2) {
-				// invalid length
-			}
-			// in the future we can send a web request to email checker.net
-			if (!email.contains("@")) {
-				// invalid email
-			}
-			if (password.length() < 6) {
-				// passowrd must be greater than 6
-			}
+			
 			if (!(phone.matches("[0-9]+") && phone.length() > 9)) {
 				// invalid phone number
 				request.setAttribute("message", "Phone number must only contain numbers");

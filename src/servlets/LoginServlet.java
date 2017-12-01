@@ -67,7 +67,7 @@ public class LoginServlet extends HttpServlet {
 			// STEP 4: Execute a query
 			stmt = conn.createStatement();
 			String sql;
-			sql = "SELECT password from users where email='" + email + "'";
+			sql = "SELECT password, firstname, lastname from users where email='" + email + "'";
 			ResultSet rs = stmt.executeQuery(sql);
 			try {
 				if(!rs.next()) {
@@ -78,7 +78,11 @@ public class LoginServlet extends HttpServlet {
 				else {
 					String s=rs.getString("password");
 					if(s.equals(password)) {
-						response.sendRedirect("home.jsp");//changed from searchHotel to home.jsp
+						String name = rs.getString("firstname")+" "+rs.getString("lastname");
+						System.out.println(name);
+						request.setAttribute("name", name);
+						request.getRequestDispatcher("/home.jsp").forward(request, response);
+						response.sendRedirect("home.jsp");
 					}else{
 						request.setAttribute("message", "Invalid Password");
 						request.getRequestDispatcher("/index.jsp").forward(request, response);

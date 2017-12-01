@@ -7,24 +7,29 @@
 <title>Member Home</title>
 </head>
 <body>
-	Welcome:
+	Welcome: <%
+	String test =(String)request.getAttribute("name");
+	if(test!=null){
+		out.print(test);
+	}
+	%>
 
 	<br></br>
 
-	<form method="post" action="searchHotel.jsp">
+	<form method="get" action="searchHotel.jsp">
 		<input type="submit" value="Make Reservation">
 	</form>
 
 	<br></br>
 
-	<form method="post" action="index.jsp"> 
+	<form method="get" action="index.jsp"> 
 		<input type="submit" value="Make Review">
 
 	</form>
 
 	<br></br>
 
-	<form method="post" action="index.jsp">
+	<form method="get" action="index.jsp">
 		<input type="submit" value="Manage Account">
 
 	</form>
