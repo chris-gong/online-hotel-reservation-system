@@ -101,7 +101,7 @@ public class RegisterServlet extends HttpServlet {
 					s2.executeUpdate(insertUser);
 					request.setAttribute("message", "Account successfully registered");
 					//response.sendRedirect("index.jsp");
-					request.getRequestDispatcher("/register.jsp").forward(request, response);
+					request.getRequestDispatcher("/index.jsp").forward(request, response);
 				}else {
 					System.out.println("dup email");
 					response.sendRedirect("register.jsp");
