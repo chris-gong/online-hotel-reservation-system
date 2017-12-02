@@ -47,6 +47,15 @@ public class RoomLookupServlet extends HttpServlet {
 		doGet(request, response);
 		String country = request.getParameter("country");
 		String state = request.getParameter("state");
+		if(country.equals("America")) {
+			state=request.getParameter("state1");
+		}
+		else if(country.equals("India")) {
+			state=request.getParameter("state2");
+		}
+		else {
+			state=request.getParameter("state3");
+		}
 		System.out.println(country);
 		System.out.println(state);
 		//String rType = request.getParameter("rType");

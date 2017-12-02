@@ -30,7 +30,7 @@
 
 		<div id="America" class="style-sub-1" style="display: none;"
 			name="stylesub1" onchange="ChangeDropdowns(this.value)">
-			<label>Which state in America?</label> <select name="state">
+			<label>Which state in America?</label> <select name="state1">
 				<option value="">-Choose state-</option>
 				<option value="NJ">NJ</option>
 				<option value="NY">NY</option>
@@ -40,7 +40,7 @@
 		</div>
 		<div id="India" class="style-sub-1" style="display: none;"
 			name="stylesub1" onchange="ChangeDropdowns(this.value)">
-			<label>Which state in India?</label> <select name="state">
+			<label>Which state in India?</label> <select name="state2">
 				<option value="">-Choose state</option>
 				<option value="Gujurat">American Lager</option>
 				<option value="Something">Somethingr</option>
@@ -51,9 +51,9 @@
 		</div>
 		<div id="France" class="style-sub-1" style="display: none;"
 			name="stylesub1" onchange="ChangeDropdowns(this.value)">
-			<label>Which state in France?</label> <select name="state">
+			<label>Which state in France?</label> <select name="state3">
 				<option value="">Choose state</option>
-				<option value="Idk states">Test</option>
+				<option value="Test">Test</option>
 				<option value="Herbed / Spiced Beer">Herbed / Spiced Beer</option>
 				<option value="Smoked Beer">Smoked Beer</option>
 			</select>
