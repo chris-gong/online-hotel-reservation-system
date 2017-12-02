@@ -16,7 +16,7 @@
 
 	<br></br>
 
-	<form method="get" action="searchHotel.jsp">
+	<form method="get" action="RoomLookup">
 		<input type="submit" value="Make Reservation">
 	</form>
 
