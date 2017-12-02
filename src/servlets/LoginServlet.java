@@ -81,7 +81,6 @@ public class LoginServlet extends HttpServlet {
 						System.out.println(name);
 						request.setAttribute("name", name);
 						request.getRequestDispatcher("/home.jsp").forward(request, response);
-						response.sendRedirect("home.jsp");
 					}else{
 						request.setAttribute("message", "Invalid Password");
 						request.getRequestDispatcher("/index.jsp").forward(request, response);

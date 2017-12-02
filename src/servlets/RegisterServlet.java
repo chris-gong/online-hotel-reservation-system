@@ -85,8 +85,8 @@ public class RegisterServlet extends HttpServlet {
 			try {
 				if (!eResult.next()) {
 					stmt = conn.createStatement();
-					String insertUser = "insert into users values('" + email + "','" + fname + "','" + lname + "','"
-							+ password + "','0','" + phone + "','" + address + "')";
+					String insertUser = "insert into users(email,firstname,lastname,password,phone_num,address) values('" + email + "','" + fname + "','" + lname + "','"
+							+ password + "','" + phone + "','" + address + "')";
 					stmt.executeUpdate(insertUser);
 					request.setAttribute("message", "Account successfully registered");
 					request.getRequestDispatcher("/index.jsp").forward(request, response);

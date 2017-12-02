@@ -12,9 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class InfoCheck
+ * Servlet implementation class RoomLookupServlet
  */
-@WebServlet("/InfoCheck")
+@WebServlet("/RoomLookupServlet")
 public class RoomLookupServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
