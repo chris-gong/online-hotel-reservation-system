@@ -13,6 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import server.*;
 
 /**
  * Servlet implementation class RegisterServlet
@@ -20,13 +21,6 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/RegisterServlet")
 public class RegisterServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
-	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-	static final String DB_URL = "jdbc:mysql://localhost/cs336";
-
-	// Database credentials
-	static final String USER = "newuser";
-	static final String PASS = "test";
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -54,53 +48,39 @@ public class RegisterServlet extends HttpServlet {
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
-		Connection conn = null;
-		Statement stmt = null;
+
+		String fname = request.getParameter("rfname");
+		String lname = request.getParameter("rlname");
+		String email = request.getParameter("remail");
+		String address = request.getParameter("raddress");
+		String password = request.getParameter("rpassword");
+		String phone = request.getParameter("rphone");
+
+		if (!(phone.matches("[0-9]+") && phone.length() > 9)) {
+			// invalid phone number
+			request.setAttribute("message", "Phone number must only contain numbers");
+			request.getRequestDispatcher("/register.jsp").forward(request, response);
+		}
+
+		// check if email is already in database.
+		String emailCheck = "select email from users where email ='" + email + "'";
+		ResultSet eResult = LocalDbConnect.executeSelectQuery(emailCheck);
+		System.out.println("Before checking results");
 		try {
-			// STEP 2: Register JDBC driver
-			Class.forName("com.mysql.jdbc.Driver");
+			if (!eResult.next()) {
+				String insertUser = "insert into users(email,firstname,lastname,password,phone_num,address) values('"
+						+ email + "','" + fname + "','" + lname + "','" + password + "','" + phone + "','" + address
+						+ "')";
+				LocalDbConnect.executeInsertQuery(insertUser);
+				request.setAttribute("message", "Account successfully registered");
+				request.getRequestDispatcher("/index.jsp").forward(request, response);
 
-			// STEP 3: Open a connection
-			System.out.println("Connecting to database...");
-			conn = DriverManager.getConnection(DB_URL, USER, PASS);
-			String fname = request.getParameter("rfname");
-			String lname = request.getParameter("rlname");
-			String email = request.getParameter("remail");
-			String address = request.getParameter("raddress");
-			String password = request.getParameter("rpassword");
-			String phone = request.getParameter("rphone");
-
-			
-			if (!(phone.matches("[0-9]+") && phone.length() > 9)) {
-				// invalid phone number
-				request.setAttribute("message", "Phone number must only contain numbers");
+			} else {
+				request.setAttribute("message", "This email already exists");
 				request.getRequestDispatcher("/register.jsp").forward(request, response);
 			}
 
-			// check if email is already in database.
-			Statement s = conn.createStatement();
-			String emailCheck = "select email from users where email ='" + email + "'";
-			ResultSet eResult = s.executeQuery(emailCheck);
-			System.out.println("Before checking results");
-			try {
-				if (!eResult.next()) {
-					stmt = conn.createStatement();
-					String insertUser = "insert into users(email,firstname,lastname,password,phone_num,address) values('" + email + "','" + fname + "','" + lname + "','"
-							+ password + "','" + phone + "','" + address + "')";
-					stmt.executeUpdate(insertUser);
-					request.setAttribute("message", "Account successfully registered");
-					request.getRequestDispatcher("/index.jsp").forward(request, response);
-
-				} else {
-					request.setAttribute("message", "This email already exists");
-					request.getRequestDispatcher("/register.jsp").forward(request, response);
-				}
-
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
