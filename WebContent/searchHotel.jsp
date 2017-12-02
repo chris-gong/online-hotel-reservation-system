@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -22,9 +23,9 @@
 				class=" validate['required']" title="" type="select" name="country">
 				<%-- changed name from style to country --%>
 				<option value="">Choose a country</option>
-				<option value="America">America</option>
-				<option value="France">France</option>
-				<option value="India">India</option>
+				<c:forEach items="${countries}" var="country"> 
+					<option value="${country}" >${country}</option>
+				</c:forEach>
 			</select>
 			<div class="clear"></div>
 			<div id="error-message-style"></div>

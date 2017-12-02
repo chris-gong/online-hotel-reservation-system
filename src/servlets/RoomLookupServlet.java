@@ -1,11 +1,13 @@
 package servlets;
 
 import java.io.IOException;
-
+import java.sql.ResultSet;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
+import javax.security.auth.message.callback.PrivateKeyCallback.Request;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -36,7 +38,34 @@ public class RoomLookupServlet extends HttpServlet {
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
 		System.out.println("Reached RoomLookupServlet via Get request");
 		//request dispatcher is needed to get jsp file after get request for room lookup servlet is done
+		String qry="Select distinct country from hotels h ;";
+		ArrayList<String> countries = new ArrayList<String>();
+		try {
+			ResultSet rs=LocalDbConnect.executeSelectQuery(qry);
+			while(rs.next()) {
+				String country = rs.getString("country");
+				countries.add(country);
+			}
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		request.setAttribute("countries",countries);
 		request.getRequestDispatcher("/searchHotel.jsp").forward(request, response);
+	}
+	public ArrayList<String> getStates(String country) {
+		ArrayList<String> states = new ArrayList<String>();
+		String qry="Select distinct states from hotels h where h.country='"+country+"';";
+		ResultSet rs=LocalDbConnect.executeSelectQuery(qry);
+		try {
+			while(rs.next()) {
+				states.add(rs.getString("state"));
+			}
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		return states;
 	}
 
 	/**
