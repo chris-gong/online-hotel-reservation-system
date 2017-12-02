@@ -17,7 +17,8 @@
 		<div class="ccms_form_element cfdiv_custom" id="style_container_div">
 
 
-			<label>Country:</label><select size="1" id="beerStyle"
+			<label>Country:</label>
+			<select size="1" id="Countries"
 				class=" validate['required']" title="" type="select" name="country">
 				<%-- changed name from style to country --%>
 				<option value="">Choose a country</option>
@@ -33,12 +34,42 @@
 		<div id="America" class="style-sub-1" style="display: none;"
 			name="stylesub1" onchange="ChangeDropdowns(this.value)">
 			<label>Which state in United States?</label> 
-			<select name="state1" onchange="f()">
+			<select id = "USA" name="United States" onchange="f()">
 				<option value="">-Choose state-</option>
-				<option value="NY">NY</option>
-				<option value="Washington DC">Washington DC</option>
+				<option value="NYCities">NY</option>
+				<option value="PACities">PA</option>
+				<option value="NJcities">NJ</option>
 			</select>
 		</div>
+		
+		
+		<!--Div for class. Make it style-sub-2 ???   -->
+		
+		<div id = "NYCities", class = "style-sub-1" style="display: none;"
+			name = "stylesub1" onchange = "ChangeDropdowns(this.value)">
+			<label>Which city in NY?</label>
+			<select name="state1" onchange="f()">
+				<option value="">-Choose state-</option>
+				<option value="NYC">NY</option>
+				<option value="Albany">Albany</option>
+			</select>
+		
+		</div>
+		
+		<div id = "NJcities", class = "style-sub-1" style="display: none;"
+			name = "stylesub1" onchange = "ChangeDropdowns(this.value)">
+			<label>Which city in NJ?</label>
+			<select name="state2" onchange="f()">
+				<option value="">-Choose state-</option>
+				<option value="Piscataway">Piscataway</option>
+				<option value="NB">New Brunswick</option>
+				<option value="Newark">Newark</option>
+			</select>
+		
+		</div>
+		
+		
+		
 		<div id="India" class="style-sub-1" style="display: none;"
 			name="stylesub1" onchange="ChangeDropdowns(this.value)">
 			<label>Which state in India?</label> <select name="state2">
@@ -58,33 +89,10 @@
 		</div>
 		<div class="clear"></div>
 		<div id="error-message-style-sub-1"></div>
-
-
-		<div class="row">
-			<div id="NY" style=visibility:hidden>
-				<Label> Pick a City </label><select>
-				<option value=""></option>
-				<option value="New York">New York</option>
-				</select>
-			</div>
-		</div>
 		
-		<script>
-			function f(){
-				document.getElementById('NY').style.visibility='visible';
-			}
-		
-		</script>
-
-
-
-
-
-
-
 
 		<script>
-			$("#beerStyle").change(function() {
+			$("#Countries").change(function() {
 				var targID = $(this).val();
 				$("div.style-sub-1").hide();
 				$('#' + targID).show();
@@ -92,10 +100,17 @@
 		</script>
 
 		<script>
-			$("#NY").change(function() {
-				var targID = $(this).val();
-				$("div.style-sub-1").hide();
-				$('#' + targID).show();
+			$("#USA").change(function() {
+				
+				var e = document.getElementById("USA");
+				var strUser = e.options[e.selectedIndex].text;
+				alert(strUser);
+				window.alert(strUser);
+				$('#' + strUser).show();
+				
+			    // var targID = $(this).val();
+				//$('#' + targID).show(); //was show
+				//$('#NYCities').show();
 			})
 		</script>
 
