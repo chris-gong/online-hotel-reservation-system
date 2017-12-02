@@ -18,7 +18,8 @@
 
 
 			<label>Country:</label><select size="1" id="beerStyle"
-				class=" validate['required']" title="" type="select" name="country"><%-- changed name from style to country --%>
+				class=" validate['required']" title="" type="select" name="country">
+				<%-- changed name from style to country --%>
 				<option value="">Choose a country</option>
 				<option value="America">America</option>
 				<option value="France">France</option>
@@ -28,9 +29,11 @@
 			<div id="error-message-style"></div>
 		</div>
 
+
 		<div id="America" class="style-sub-1" style="display: none;"
 			name="stylesub1" onchange="ChangeDropdowns(this.value)">
-			<label>Which state in United States?</label> <select name="state1">
+			<label>Which state in United States?</label> 
+			<select name="state1" onchange="f()">
 				<option value="">-Choose state-</option>
 				<option value="NY">NY</option>
 				<option value="Washington DC">Washington DC</option>
@@ -55,7 +58,29 @@
 		</div>
 		<div class="clear"></div>
 		<div id="error-message-style-sub-1"></div>
+
+
+		<div class="row">
+			<div id="NY" style=visibility:hidden>
+				<Label> Pick a City </label><select>
+				<option value=""></option>
+				<option value="New York">New York</option>
+				</select>
+			</div>
+		</div>
 		
+		<script>
+			function f(){
+				document.getElementById('NY').style.visibility='visible';
+			}
+		
+		</script>
+
+
+
+
+
+
 
 
 		<script>
@@ -66,9 +91,19 @@
 			})
 		</script>
 
+		<script>
+			$("#NY").change(function() {
+				var targID = $(this).val();
+				$("div.style-sub-1").hide();
+				$('#' + targID).show();
+			})
+		</script>
+
+
+
 
 		<label>Check in Date:</label> <input type="Date" name="inDate" /><br>
-		<label>Check out Date:</label> <input type="Date" name="outDate" /><br> 
+		<label>Check out Date:</label> <input type="Date" name="outDate" /><br>
 
 		Room type: <select name="roomType">
 			<option>Single</option>
