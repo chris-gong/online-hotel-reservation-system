@@ -30,23 +30,18 @@
 
 		<div id="America" class="style-sub-1" style="display: none;"
 			name="stylesub1" onchange="ChangeDropdowns(this.value)">
-			<label>Which state in America?</label> <select name="state1">
+			<label>Which state in United States?</label> <select name="state1">
 				<option value="">-Choose state-</option>
-				<option value="NJ">NJ</option>
 				<option value="NY">NY</option>
-				<option value="California">California</option>
-				<option value="Texas">Texas</option>
+				<option value="Washington DC">Washington DC</option>
 			</select>
 		</div>
 		<div id="India" class="style-sub-1" style="display: none;"
 			name="stylesub1" onchange="ChangeDropdowns(this.value)">
 			<label>Which state in India?</label> <select name="state2">
 				<option value="">-Choose state</option>
-				<option value="Gujurat">American Lager</option>
-				<option value="Something">Somethingr</option>
-				<option value="European Lager">European Lager</option>
-				<option value="German Lager">German Lager</option>
-				<option value="Japanese Lager">Japanese Lager</option>
+				<option value="Gujurat">Gujurat</option>
+				<option value="Tamil Nadu">Tamil Nadu</option>
 			</select>
 		</div>
 		<div id="France" class="style-sub-1" style="display: none;"
