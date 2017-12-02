@@ -18,7 +18,7 @@
 
 
 			<label>Country:</label><select size="1" id="beerStyle"
-				class=" validate['required']" title="" type="select" name="style">
+				class=" validate['required']" title="" type="select" name="country"><%-- changed name from style to country --%>
 				<option value="">Choose a country</option>
 				<option value="America">America</option>
 				<option value="France">France</option>
@@ -30,18 +30,18 @@
 
 		<div id="America" class="style-sub-1" style="display: none;"
 			name="stylesub1" onchange="ChangeDropdowns(this.value)">
-			<label>What state in America?</label> <select>
+			<label>Which state in America?</label> <select name="state">
 				<option value="">-Choose state-</option>
 				<option value="NJ">NJ</option>
 				<option value="NY">NY</option>
-				<option value="California">California/option>
+				<option value="California">California</option>
 				<option value="Texas">Texas</option>
 			</select>
 		</div>
 		<div id="India" class="style-sub-1" style="display: none;"
 			name="stylesub1" onchange="ChangeDropdowns(this.value)">
-			<label>Which state in India?</label> <select>
-				<option value="">-Choose stater-</option>
+			<label>Which state in India?</label> <select name="state">
+				<option value="">-Choose state</option>
 				<option value="Gujurat">American Lager</option>
 				<option value="Something">Somethingr</option>
 				<option value="European Lager">European Lager</option>
@@ -51,8 +51,8 @@
 		</div>
 		<div id="France" class="style-sub-1" style="display: none;"
 			name="stylesub1" onchange="ChangeDropdowns(this.value)">
-			<label>Which state in France?</label> <select>
-				<option value="">-Choose state</option>
+			<label>Which state in France?</label> <select name="state">
+				<option value="">Choose state</option>
 				<option value="Idk states">Test</option>
 				<option value="Herbed / Spiced Beer">Herbed / Spiced Beer</option>
 				<option value="Smoked Beer">Smoked Beer</option>
@@ -60,7 +60,7 @@
 		</div>
 		<div class="clear"></div>
 		<div id="error-message-style-sub-1"></div>
-		</div>
+		
 
 
 		<script>

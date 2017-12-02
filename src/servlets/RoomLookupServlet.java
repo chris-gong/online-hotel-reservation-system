@@ -47,10 +47,13 @@ public class RoomLookupServlet extends HttpServlet {
 		doGet(request, response);
 		String country = request.getParameter("country");
 		String state = request.getParameter("state");
-		String rType = request.getParameter("rType");
-		String[] inDate = request.getParameterValues("inDate");
-		String[] outDate = request.getParameterValues("outDate");
-		SimpleDateFormat availDate = new SimpleDateFormat("yyyy-MM-dd");
+		System.out.println(country);
+		System.out.println(state);
+		//String rType = request.getParameter("rType");
+		//String[] inDate = request.getParameterValues("inDate");
+		//String[] outDate = request.getParameterValues("outDate");
+		//SimpleDateFormat availDate = new SimpleDateFormat("yyyy-MM-dd");
+		/*
 		try {
 			Date chosenInDate = availDate.parse(inDate[0]);
 			Date chosenOutDate = availDate.parse(outDate[0]);
@@ -60,7 +63,7 @@ public class RoomLookupServlet extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		*/
 		//response.sendRedirect("selectHotel.jsp");
 	}
 
