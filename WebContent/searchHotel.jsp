@@ -45,7 +45,7 @@
 		
 		<!--Div for class. Make it style-sub-2 ???   -->
 		
-		<div id = "NYCities", class = "style-sub-1" style="display: none;"
+		<div id = "NYCities", class = "style-sub-2" style="display: none;"
 			name = "stylesub1" onchange = "ChangeDropdowns(this.value)">
 			<label>Which city in NY?</label>
 			<select name="state1" onchange="f()">
@@ -56,7 +56,7 @@
 		
 		</div>
 		
-		<div id = "NJcities", class = "style-sub-1" style="display: none;"
+		<div id = "NJcities", class = "style-sub-2" style="display: none;"
 			name = "stylesub1" onchange = "ChangeDropdowns(this.value)">
 			<label>Which city in NJ?</label>
 			<select name="state2" onchange="f()">
@@ -103,9 +103,10 @@
 			$("#USA").change(function() {
 				
 				var e = document.getElementById("USA");
-				var strUser = e.options[e.selectedIndex].text;
-				alert(strUser);
-				window.alert(strUser);
+				var strUser = e.options[e.selectedIndex].value;
+				//alert(strUser);
+				//window.alert(strUser);
+				$("div.style-sub-2").hide();
 				$('#' + strUser).show();
 				
 			    // var targID = $(this).val();
