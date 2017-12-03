@@ -56,6 +56,7 @@ public class RoomLookupServlet extends HttpServlet {
 	public ArrayList<String> getStates(String country) {
 		ArrayList<String> states = new ArrayList<String>();
 		String qry="Select distinct states from hotels h where h.country='"+country+"';";
+		System.out.println("getStates method was called");
 		ResultSet rs=LocalDbConnect.executeSelectQuery(qry);
 		try {
 			while(rs.next()) {
