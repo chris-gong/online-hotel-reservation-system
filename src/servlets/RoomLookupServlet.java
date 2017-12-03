@@ -6,6 +6,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 import javax.security.auth.message.callback.PrivateKeyCallback.Request;
 import javax.servlet.ServletException;
@@ -53,20 +54,25 @@ public class RoomLookupServlet extends HttpServlet {
 		request.setAttribute("countries",countries);
 		request.getRequestDispatcher("/searchHotel.jsp").forward(request, response);
 	}
-	public ArrayList<String> getStates(String country) {
-		ArrayList<String> states = new ArrayList<String>();
-		String qry="Select distinct states from hotels h where h.country='"+country+"';";
+	public HashMap<String,ArrayList <String>> getStates(){
+		HashMap<String,ArrayList<String>> countryStates = new HashMap<String,ArrayList<String>>();
+		String qry="Select distinct country, state from hotels h;";
 		System.out.println("getStates method was called");
 		ResultSet rs=LocalDbConnect.executeSelectQuery(qry);
 		try {
 			while(rs.next()) {
-				states.add(rs.getString("state"));
+				String country = rs.getString("country");
+				String state = rs.getString("state");
+				if(!countryStates.containsKey(country)) {
+					countryStates.put(country, new ArrayList<String>());
+				}
+				countryStates.get(country).add(state);
 			}
 		}
 		catch(Exception e) {
 			e.printStackTrace();
 		}
-		return states;
+		return countryStates;
 	}
 
 	/**
