@@ -38,6 +38,11 @@ public class RoomLookupServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
 		System.out.println("Reached RoomLookupServlet via Get request");
+		String countrySelection = request.getParameter("country");
+		System.out.println(countrySelection);
+		if(countrySelection != null){
+			
+		}
 		//request dispatcher is needed to get jsp file after get request for room lookup servlet is done
 		String qry="Select distinct country from hotels h ;";
 		ArrayList<String> countries = new ArrayList<String>();

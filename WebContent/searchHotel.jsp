@@ -18,8 +18,7 @@
 
 	<form method="post" action="RoomLookup">
 		<div id="countrylist">
-			<label>Country:</label> <select size="1" id="countries"
-				class=" validate['required']" title="" type="select" name="country">
+			<label>Country:</label> <select size="1" id="countries" title="" name="country" required>
 				<option value="">Choose a country</option>
 				<c:forEach items="${countries}" var="country">
 					<option value="${country}">${country}</option>
@@ -30,7 +29,7 @@
 		</div>
 		<div id="statelist">
 			<label>State:</label> <select size="1" id="states"
-				class=" validate['required']" title="" type="select" name="state">
+				class=" validate['required']" title="" name="state">
 			</select>
 			<div class="clear"></div>
 			<div id="error-message-style"></div>
@@ -55,20 +54,19 @@
 	</form>
 </body>
 <script>
-	<c:set var="countryStates" scope = "session" value = "${RoomLookup.getStates()}" />
 	function generateStatesHtml(country) {
 		//console.log(country);
-		<c:forEach items="${countryStates}" var="countryState"> 
-			console.log("${countryState['key']}");
-			if("${countryState['key']}"===country){
-				//$("#states").append('<option value="">${countryState}</option>');
+		$.ajax({
+			url: 'RoomLookup',
+			data: {country: country},
+			type: 'get',
+			success: function(result){
 				
-				<c:forEach items="${countryState.value}" var="state"> 
-					$("#states").append('<option value="">"${state}"</option>');
-				</c:forEach>
+			},
+			error: function(){
+				
 			}
-			
-		</c:forEach>
+		});
 	}
 	
 	$(document).ready(function() {
