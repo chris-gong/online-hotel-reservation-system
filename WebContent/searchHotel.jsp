@@ -28,14 +28,21 @@
 			<div id="error-message-style"></div>
 		</div>
 		<div id="statelist">
-			<label>State:</label> <select size="1" id="states"
-				class=" validate['required']" title="" name="state">
+			<label>State:</label> <select size="1" id="states" title="" name="state" required>
 			</select>
 			<div class="clear"></div>
 			<div id="error-message-style"></div>
 		</div>
 		<div class="clear"></div>
 		<div id="error-message-style-sub-1"></div>
+		
+		
+		<div id="citylist">
+			<label>City:</label> <select size="1" id="cities" title="" name="city" required>
+			</select>
+			<div class="clear"></div>
+			<div id="error-message-style"></div>
+		</div>
 
 		<label>Check in Date:</label> <input type="Date" name="inDate" /><br>
 		<label>Check out Date:</label> <input type="Date" name="outDate" /><br>
@@ -55,40 +62,61 @@
 </body>
 <script>
 	function generateStatesHtml(country) {
-		//console.log(country);
 		$.ajax({
 			url: 'RoomLookup',
 			data: {country: country},
 			type: 'get',
 			success: function(result){
-				
+				console.log(result);
+				$("#states").html(result);
 			},
 			error: function(){
-				
+				console.log("error yay");
+			}
+		});
+	}
+	function generateCitiesHtml(country,state) {
+		$.ajax({
+			url: 'RoomLookup',
+			data: {country: country,state:state},
+			type: 'get',
+			success: function(result){
+				console.log(result);
+				$("#cities").html(result);
+			},
+			error: function(){
+				console.log("error yay");
 			}
 		});
 	}
 	
+	
 	$(document).ready(function() {
+		$('#statelist').hide();
+		$('#citylist').hide();
 		$("#countries").change(function() {
 			var country = $(this).val();
 			//console.log(country);
-			generateStatesHtml(country);
-			$('#statelist').show();
+			if(country===""){
+				$('#statelist').hide();
+			}else{
+				generateStatesHtml(country);
+				$('#statelist').show();
+			}
+			$('#citylist').hide();
 			console.log('country changed');
 		});
-		$("#USA").change(function() {
-
-			var e = document.getElementById("USA");
-			var strUser = e.options[e.selectedIndex].value;
-			//alert(strUser);
-			//window.alert(strUser);
-			$("div.style-sub-2").hide();
-			$('#' + strUser).show();
-
-			// var targID = $(this).val();
-			//$('#' + targID).show(); //was show
-			//$('#NYCities').show();
+		$("#states").change(function() {
+			var state = $(this).val();
+			var country = $("#countries").val();
+			//console.log(country);
+			if(state===""){
+				$('#citylist').hide();
+			}else{
+				generateCitiesHtml(country,state);
+				$('#citylist').show();
+			}
+			console.log('city changed');
 		});
 	});
 </script>
