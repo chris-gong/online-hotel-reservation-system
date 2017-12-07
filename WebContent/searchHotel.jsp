@@ -24,8 +24,6 @@
 					<option value="${country}">${country}</option>
 				</c:forEach>
 			</select>
-			<div class="clear"></div>
-			<div id="error-message-style"></div>
 		</div>
 		<div id="statelist">
 			<label>State:</label> <select size="1" id="states" title="" name="state" required>
@@ -33,31 +31,25 @@
 			<div class="clear"></div>
 			<div id="error-message-style"></div>
 		</div>
-		<div class="clear"></div>
-		<div id="error-message-style-sub-1"></div>
-		
-		
 		<div id="citylist">
 			<label>City:</label> <select size="1" id="cities" title="" name="city" required>
 			</select>
-			<div class="clear"></div>
-			<div id="error-message-style"></div>
 		</div>
 
-		<label>Check in Date:</label> <input type="Date" name="inDate" /><br>
-		<label>Check out Date:</label> <input type="Date" name="outDate" /><br>
+		<label>Check in Date:</label> <input type="Date" name="inDate" required/><br>
+		<label>Check out Date:</label> <input type="Date" name="outDate" required/><br>
 
-		Room type: <select name="roomType">
-			<option>Single</option>
-			<option>Double</option>
-			<option>Triple</option>
-			<option>Quad</option>
-			<option>Queen</option>
-			<option>King</option>
-			<option>Twin</option>
-			<option>Double-double</option>
-			<option>Studio</option>
-		</select> <br> <input type="submit">
+		Number of rooms: <select id="num_rooms" >
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+		</select> 
+		<div id="rooms">
+			<div class="room_info">
+			Test
+			</div>
+		</div>
+		<input type="submit">
 	</form>
 </body>
 <script>
@@ -92,6 +84,7 @@
 	
 	
 	$(document).ready(function() {
+		var room_count = 1;
 		$('#statelist').hide();
 		$('#citylist').hide();
 		$("#countries").change(function() {
@@ -117,6 +110,23 @@
 				$('#citylist').show();
 			}
 			console.log('city changed');
+		});
+		$("#num_rooms").change(function(){
+			if($(this).val() > room_count){
+				//add rooms
+				var rooms_to_add = $(this).val() - room_count;
+				for(i = 0; i < rooms_to_add; i++){
+					$('#rooms .room_info').last().append('<div class="room_info">Test</div>');
+				}
+			}
+			else{
+				//delete rooms
+				var rooms_to_delete = room_count - $(this).val();
+				for(i = 0; i < rooms_to_delete; i++){
+					$('#rooms .room_info').last().remove();
+				}
+			}
+			room_count = $(this).val();
 		});
 	});
 </script>
