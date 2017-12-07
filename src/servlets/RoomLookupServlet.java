@@ -137,7 +137,7 @@ public class RoomLookupServlet extends HttpServlet {
 		}
 		System.out.println(country);
 		System.out.println(state);
-		System.out.println("numRooms: " + numRooms);
+		System.out.println("numRooms:  " + numRooms); 
 		// String rType = request.getParameter("rType");
 		// String[] inDate = request.getParameterValues("inDate");
 		// String[] outDate = request.getParameterValues("outDate");
