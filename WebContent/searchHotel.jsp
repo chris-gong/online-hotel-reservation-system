@@ -10,6 +10,7 @@
 <title>Search Hotel</title>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
 </head>
 <%-- User selects options for kind of hotel they want to reserve --%>
 
@@ -39,14 +40,21 @@
 		<label>Check in Date:</label> <input type="Date" name="inDate" required/><br>
 		<label>Check out Date:</label> <input type="Date" name="outDate" required/><br>
 
-		Number of rooms: <select id="num_rooms" >
-			<option value="1">1</option>
-			<option value="2">2</option>
-			<option value="3">3</option>
+		Number of rooms: <select id="num_rooms" name="num_rooms" >
+			<c:forEach begin="1" end="3" varStatus="loop">
+				<option value="${loop.index}">${loop.index}</option>
+			</c:forEach>
 		</select> 
 		<div id="rooms">
+			<label style="padding-right:5em;">Rooms</label> 
+			<label>Capacity</label>
 			<div class="room_info">
-			Test
+				<label style="padding-right:4.5em;">Room 1:</label>
+				<select class="num_people" name="num_people" >
+					<c:forEach begin="1" end="4" varStatus="loop">
+						<option value="${loop.index}">${loop.index}</option>
+					</c:forEach>
+				</select> 
 			</div>
 		</div>
 		<input type="submit">
@@ -116,7 +124,7 @@
 				//add rooms
 				var rooms_to_add = $(this).val() - room_count;
 				for(i = 0; i < rooms_to_add; i++){
-					$('#rooms .room_info').last().append('<div class="room_info">Test</div>');
+					$('#rooms .room_info').last().append('<div class="room_info"><label style="padding-right:4.5em;">Room 1: </label><select class="num_people" name="num_people" ><c:forEach begin="1" end="4" varStatus="loop"><option value="${loop.index}">${loop.index}</option></c:forEach></select></div>');
 				}
 			}
 			else{
