@@ -37,7 +37,7 @@ Register here!
 	</form>
 	
 	<script>
-		$(#registerinfo).validate();
+		$("#registerinfo").validate();
 	</script>
 	
 	<%

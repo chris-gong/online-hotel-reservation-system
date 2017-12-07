@@ -11,9 +11,9 @@
 
 <body>
 	<form method="post" action="LoginServlet">
-		Email: <br> <input type="text" name="email"> <br>
+		Email: <br> <input type="text" name="email" required> <br>
 
-		Password: <br> <input type="password" name="password"> <br>
+		Password: <br> <input type="password" name="password" required> <br>
 
 		<input type="submit"> <br> Don't have an account? Click <a
 			href="register.jsp">here</a> to register!
