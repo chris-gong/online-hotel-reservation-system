@@ -50,7 +50,7 @@
 			<label>Capacity</label>
 			<div class="room_info">
 				<label style="padding-right:4.5em;">Room 1:</label>
-				<select class="num_people" name="num_people" >
+				<select class="num_people" name="num_people_1" >
 					<c:forEach begin="1" end="4" varStatus="loop">
 						<option value="${loop.index}">${loop.index}</option>
 					</c:forEach>
@@ -124,7 +124,8 @@
 				//add rooms
 				var rooms_to_add = $(this).val() - room_count;
 				for(i = 0; i < rooms_to_add; i++){
-					$('#rooms .room_info').last().append('<div class="room_info"><label style="padding-right:4.5em;">Room 1: </label><select class="num_people" name="num_people" ><c:forEach begin="1" end="4" varStatus="loop"><option value="${loop.index}">${loop.index}</option></c:forEach></select></div>');
+					var room_num = (room_count+i+1);
+					$('#rooms .room_info').last().append('<div class="room_info"><label style="padding-right:4.5em;">Room'+room_num+': </label><select class="num_people" name="num_people_'+ room_num +'" ><c:forEach begin="1" end="4" varStatus="loop"><option value="${loop.index}">${loop.index}</option></c:forEach></select></div>');
 				}
 			}
 			else{
