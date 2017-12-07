@@ -125,6 +125,9 @@ public class RoomLookupServlet extends HttpServlet {
 		doGet(request, response);
 		String country = request.getParameter("country");
 		String state = request.getParameter("state");
+		String numRooms = request.getParameter("num_rooms");
+		
+		
 		if (country.equals("America")) {
 			state = request.getParameter("state1");
 		} else if (country.equals("India")) {
@@ -134,6 +137,7 @@ public class RoomLookupServlet extends HttpServlet {
 		}
 		System.out.println(country);
 		System.out.println(state);
+		System.out.println(numRooms);
 		// String rType = request.getParameter("rType");
 		// String[] inDate = request.getParameterValues("inDate");
 		// String[] outDate = request.getParameterValues("outDate");
