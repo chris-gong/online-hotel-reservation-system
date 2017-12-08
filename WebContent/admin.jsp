@@ -44,7 +44,7 @@
 	window.onload = setMin;
 </script>
 
-<form name = "dateinput">
+<form id = "dateinput" method="post" action="AdminServlet">
 	Check in date:<br>
 	<input  onchange = "checkDate()" type = "Date" name = "inDate" id = "indate" required>
 	<br>Check out date: <br>
