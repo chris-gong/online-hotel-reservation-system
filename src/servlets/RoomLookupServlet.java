@@ -125,25 +125,39 @@ public class RoomLookupServlet extends HttpServlet {
 		doGet(request, response);
 		String country = request.getParameter("country");
 		String state = request.getParameter("state");
-		String numRooms = request.getParameter("num_rooms");
-		String numPeople = request.getParameter("num_people_1");
-		String numPeople2 = request.getParameter("num_people_2");
+		String city = request.getParameter("city");
+		String[] numPeople = request.getParameterValues("num_people");
+		int numRooms = numPeople.length;
+		String inDate = request.getParameter("inDate");
+		String outDate = request.getParameter("outDate");
+
+		String qry = "select hotel_id from hotels where country='" + country + "'" + " and state='" + state + "'"
+				+ " and city='" + city + "';";
+		ArrayList<Integer> hotelIDs = new ArrayList<Integer>();
+		try {
+			ResultSet rs = LocalDbConnect.executeSelectQuery(qry);
+			String id;
+			if (rs.next()) {
+				id = rs.getString("hotel_id");
+				hotelIDs.add(Integer.parseInt(id));
+				while (rs.next()) {
+					id = rs.getString("hotel_id");
+					hotelIDs.add(Integer.parseInt(id));
+				}
+				request.setAttribute("hotels", hotelIDs);
+				request.getRequestDispatcher("/HotelSelect").forward(request, response);
+			} else {
+				// if there are no hotels near the inputted address, tell the user
+				request.setAttribute("message", "No hotels are nearby");
+				request.getRequestDispatcher("/RoomLookup").forward(request, response);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		
-		System.out.println(country);
-		System.out.println(state);
-		System.out.println("numRooms:  " + numRooms); 
-		System.out.println("numPeople:  " + numPeople); 
-		System.out.println("numPeople_2:  " + numPeople2); 
-		// String rType = request.getParameter("rType");
-		// String[] inDate = request.getParameterValues("inDate");
-		// String[] outDate = request.getParameterValues("outDate");
-		// SimpleDateFormat availDate = new SimpleDateFormat("yyyy-MM-dd");
-		/*
-		 * try { Date chosenInDate = availDate.parse(inDate[0]); Date chosenOutDate =
-		 * availDate.parse(outDate[0]); System.out.println(chosenInDate);
-		 * System.out.println(chosenOutDate); } catch (ParseException e) { // TODO
-		 * Auto-generated catch block e.printStackTrace(); }
-		 */
+		
+
 		// response.sendRedirect("selectHotel.jsp");
 	}
 
