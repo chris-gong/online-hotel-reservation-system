@@ -131,12 +131,12 @@ public class RoomLookupServlet extends HttpServlet {
 		int numRooms = numPeople.length;
 		String inDate = request.getParameter("inDate");
 		String outDate = request.getParameter("outDate");
-
-		String qry = "select hotel_id, name from hotels where country='" + country + "'" + " and state='" + state + "'"
+		//check if address has any nearby hotels
+		String locQry = "select hotel_id, name from hotels where country='" + country + "'" + " and state='" + state + "'"
 				+ " and city='" + city + "';";
 		ArrayList<Hotel> hotels = new ArrayList<Hotel>();
 		try {
-			ResultSet rs = LocalDbConnect.executeSelectQuery(qry);
+			ResultSet rs = LocalDbConnect.executeSelectQuery(locQry);
 			String id;
 			String name;
 			if (rs.next()) {
@@ -160,7 +160,7 @@ public class RoomLookupServlet extends HttpServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
+		
 		
 		
 
