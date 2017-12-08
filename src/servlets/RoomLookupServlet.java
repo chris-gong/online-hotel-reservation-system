@@ -149,6 +149,7 @@ public class RoomLookupServlet extends HttpServlet {
 					hotels.add(h);
 				}
 				request.setAttribute("hotels", hotels);
+				request.setAttribute("caps", numPeople);
 				request.setAttribute("address", city+","+state+","+country);
 				request.setAttribute("room_count", numRooms);
 				request.getRequestDispatcher("/selectHotel.jsp").forward(request, response);

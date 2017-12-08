@@ -1,6 +1,7 @@
 package servlets;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import javax.servlet.ServletException;
@@ -8,6 +9,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.codehaus.jackson.map.ObjectMapper;
 
 import entities.Hotel;
 
@@ -30,21 +33,27 @@ public class HotelSelectServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		ArrayList<Hotel> hotels= (ArrayList<Hotel>)request.getAttribute("hotels");
-		String address =(String) request.getAttribute("address");
-		String numRooms =(String) request.getAttribute("num_rooms");
-		request.setAttribute("hotels", hotels);
-		request.setAttribute("address", address);
-		request.setAttribute("room_count", numRooms);
-		request.getRequestDispatcher("/selectHotel.jsp").forward(request, response);
+		ObjectMapper mapper = new ObjectMapper();
+		String[] caps =mapper.readValue(request.getParameter("caps"),String[].class);
+		String id = request.getParameter("hotel_id");
+		String name = request.getParameter("name");
+		
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		
+		String id = request.getParameter("id");
+		String name = request.getParameter("name");
+		String caps = request.getParameter("caps");
+		String url = "/HotelReservations/HotelSelect?hotel_id="+id+"&name="+name+"&caps="+caps;
+		PrintWriter out = response.getWriter();
+		out.println(url);
+		return;
+		//System.out.println(name+":"+id);
+		
 	}
 
 }
