@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import entities.Hotel;
+
 /**
  * Servlet implementation class HotelSelectServlet
  */
@@ -28,7 +30,10 @@ public class HotelSelectServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println((ArrayList<Integer>)request.getAttribute("hotels"));
+		ArrayList<Hotel> hotels= (ArrayList<Hotel>)request.getAttribute("hotels");
+		String address =(String) request.getAttribute("address");
+		System.out.println(hotels.get(0).getName()+":"+hotels.get(0).getId());
+		System.out.println(address);
 		request.getRequestDispatcher("/selectHotel.jsp").forward(request, response);
 	}
 

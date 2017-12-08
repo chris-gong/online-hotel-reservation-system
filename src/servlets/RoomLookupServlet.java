@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import entities.Hotel;
 import server.*;
 
 /**
@@ -131,20 +132,24 @@ public class RoomLookupServlet extends HttpServlet {
 		String inDate = request.getParameter("inDate");
 		String outDate = request.getParameter("outDate");
 
-		String qry = "select hotel_id from hotels where country='" + country + "'" + " and state='" + state + "'"
+		String qry = "select hotel_id, name from hotels where country='" + country + "'" + " and state='" + state + "'"
 				+ " and city='" + city + "';";
-		ArrayList<Integer> hotelIDs = new ArrayList<Integer>();
+		ArrayList<Hotel> hotels = new ArrayList<Hotel>();
 		try {
 			ResultSet rs = LocalDbConnect.executeSelectQuery(qry);
 			String id;
+			String name;
 			if (rs.next()) {
 				id = rs.getString("hotel_id");
-				hotelIDs.add(Integer.parseInt(id));
+				name =rs.getString("name");
+				Hotel h = new Hotel(Integer.parseInt(id),name);
+				hotels.add(h);
 				while (rs.next()) {
 					id = rs.getString("hotel_id");
-					hotelIDs.add(Integer.parseInt(id));
+					hotels.add(h);
 				}
-				request.setAttribute("hotels", hotelIDs);
+				request.setAttribute("hotels", hotels);
+				request.setAttribute("address", city+","+state+","+country);
 				request.getRequestDispatcher("/HotelSelect").forward(request, response);
 			} else {
 				// if there are no hotels near the inputted address, tell the user
