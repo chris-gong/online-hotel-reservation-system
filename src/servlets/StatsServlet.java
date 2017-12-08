@@ -3,6 +3,7 @@ package servlets;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -33,17 +34,9 @@ public class StatsServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
 		
 		
-		/*String query1 = "Select t4.type, t6.hotel_id, t6.maxAV from\n" + 
+		String query1 = "Select t4.type, t6.hotel_id, t6.maxAV from\n" + 
 				"(Select t3.hotel_id, MAX(av) as maxAV from\n" + 
 				"(Select t2.type,t2.hotel_id, avg(rating) AS av from\n" + 
 				"    (Select r.type, rr.* from rooms r, room_review rr\n" + 
@@ -59,23 +52,58 @@ public class StatsServlet extends HttpServlet {
 				"r.room_no=rr.room_no \n" + 
 				")t5\n" + 
 				"group by t5.type, t5.hotel_id)t4\n" + 
-				"on( t6.hotel_id=t4.hotel_id AND t6.maxAV=t4.av)";*/
+				"on( t6.hotel_id=t4.hotel_id AND t6.maxAV=t4.av)";
 		
-		String test = "select * from rooms;";
+		//String test = "select * from rooms";
 		
-		ResultSet first = LocalDbConnect.executeSelectQuery(test);
-		String s = "";
+		ResultSet first = LocalDbConnect.executeSelectQuery(query1);
+		ArrayList <String> types = new ArrayList<String>();
+		ArrayList <String> hotelids = new ArrayList<String>();
+		ArrayList <String> maxs = new ArrayList<String>();
+
+		
 		try {
-			s = first.getString("price");
-			System.out.println(s);
-			System.out.println("in try");
-			//System.out.println(first.getString("firstname")); //type
-			System.out.println("after trying to print");
+			while (first.next()) {
+				//System.out.println(first.getString("maxAV")); //type
+				//request.setAttribute("type", first.getString("type"));
+				
+				types.add(first.getString("type"));
+				hotelids.add(first.getString("hotel_id"));
+				maxs.add(first.getString("maxAV"));
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			System.out.println("in catch");
 			e.printStackTrace();
 		}
+		
+		for (int i = 0; i < types.size(); i++) {
+			System.out.println(types.get(i) + " " + hotelids.get(i) + " " + maxs.get(i));
+		}
+		
+			
+		
+		request.setAttribute("types", types);
+		request.setAttribute("hotelids", hotelids);
+		request.setAttribute("maxs", maxs);
+		
+		
+		request.getRequestDispatcher("/stats.jsp").forward(request,response);
+		
+		
+		
+
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
+		
+		
+		
 		
 		
 		
