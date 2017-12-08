@@ -20,16 +20,16 @@ import entities.Hotel;
 import server.*;
 
 /**
- * Servlet implementation class RoomLookupServlet
+ * Servlet implementation class HotelLookupServlet
  */
-@WebServlet(urlPatterns = "/RoomLookup")
-public class RoomLookupServlet extends HttpServlet {
+@WebServlet(urlPatterns = "/HotelLookup")
+public class HotelLookupServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public RoomLookupServlet() {
+	public HotelLookupServlet() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -41,7 +41,7 @@ public class RoomLookupServlet extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		// response.getWriter().append("Served at: ").append(request.getContextPath());
-		System.out.println("Reached RoomLookupServlet via Get request");
+		System.out.println("Reached HotelLookupServlet via Get request");
 		String countrySelection = request.getParameter("country");
 		String stateSelection = request.getParameter("state");
 		if (countrySelection != null && stateSelection != null) {
@@ -156,7 +156,7 @@ public class RoomLookupServlet extends HttpServlet {
 			} else {
 				// if there are no hotels near the inputted address, tell the user
 				request.setAttribute("message", "No hotels are nearby");
-				request.getRequestDispatcher("/RoomLookup").forward(request, response);
+				request.getRequestDispatcher("/HotelLookup").forward(request, response);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

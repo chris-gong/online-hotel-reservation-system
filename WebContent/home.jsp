@@ -16,7 +16,7 @@
 
 	<br></br>
 
-	<form method="get" action="RoomLookup">
+	<form method="get" action="HotelLookup">
 		<input type="submit" value="Make Reservation">
 	</form>
 

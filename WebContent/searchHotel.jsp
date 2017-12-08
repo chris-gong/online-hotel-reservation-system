@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<jsp:useBean id="RoomLookup" class="servlets.RoomLookupServlet"
+<jsp:useBean id="HotelLookup" class="servlets.HotelLookupServlet"
 	scope="session" />
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -17,7 +17,7 @@
 
 <body>
 
-	<form method="post" action="RoomLookup">
+	<form method="post" action="HotelLookup">
 		<div id="countrylist">
 			<label>Country:</label> <select size="1" id="countries" title="" name="country" required>
 				<option value="">Choose a country</option>
@@ -63,7 +63,7 @@
 <script>
 	function generateStatesHtml(country) {
 		$.ajax({
-			url: 'RoomLookup',
+			url: 'HotelLookup',
 			data: {country: country},
 			type: 'get',
 			success: function(result){
@@ -77,7 +77,7 @@
 	}
 	function generateCitiesHtml(country,state) {
 		$.ajax({
-			url: 'RoomLookup',
+			url: 'HotelLookup',
 			data: {country: country,state:state},
 			type: 'get',
 			success: function(result){
