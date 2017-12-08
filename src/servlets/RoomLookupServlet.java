@@ -150,7 +150,8 @@ public class RoomLookupServlet extends HttpServlet {
 				}
 				request.setAttribute("hotels", hotels);
 				request.setAttribute("address", city+","+state+","+country);
-				request.getRequestDispatcher("/HotelSelect").forward(request, response);
+				request.setAttribute("room_count", numRooms);
+				request.getRequestDispatcher("/selectHotel.jsp").forward(request, response);
 			} else {
 				// if there are no hotels near the inputted address, tell the user
 				request.setAttribute("message", "No hotels are nearby");

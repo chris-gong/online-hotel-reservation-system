@@ -32,8 +32,10 @@ public class HotelSelectServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		ArrayList<Hotel> hotels= (ArrayList<Hotel>)request.getAttribute("hotels");
 		String address =(String) request.getAttribute("address");
-		System.out.println(hotels.get(0).getName()+":"+hotels.get(0).getId());
-		System.out.println(address);
+		String numRooms =(String) request.getAttribute("num_rooms");
+		request.setAttribute("hotels", hotels);
+		request.setAttribute("address", address);
+		request.setAttribute("room_count", numRooms);
 		request.getRequestDispatcher("/selectHotel.jsp").forward(request, response);
 	}
 
