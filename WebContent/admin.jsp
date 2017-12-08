@@ -74,7 +74,7 @@
 		var outVarDate = new Date (outdate);
 	
 		
-		if (inVarDate >= outVarDate ){
+		if (inVarDate >= outVarDate ){	
 			alert ("Invalid date range. Check out date has to be after check in date");
 			document.forms["dateinput"].reset();
 		}

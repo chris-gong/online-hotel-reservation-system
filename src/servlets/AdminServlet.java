@@ -53,7 +53,7 @@ public class AdminServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 		
-		request.getRequestDispatcher("/index.jsp").forward(request,response);
+		request.getRequestDispatcher("/stats.jsp").forward(request,response);
 	
 	}
 
