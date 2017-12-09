@@ -4,12 +4,12 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>Admin page</title>
 </head>
 <body>
 <script>
 
-	function setMin(){
+	/*function setMin(){
 		var today = new Date();
 		
 		var tomorrow = new Date();
@@ -40,15 +40,30 @@
 		tomorrow = yyyyy+'-'+mmm+'-'+ddd;
 		document.getElementById("indate").setAttribute("min", today);
 		document.getElementById("outdate").setAttribute("min", tomorrow);
-	}
-	window.onload = setMin;
-</script>
-
-<form id = "dateinput" method="post" action="AdminServlet">
+	}*/
+	//window.onload = setMin;
+	
+	
+	
+	/*using the scripts:
+		<form id = "dateinput" method="post" action="AdminServlet">
 	Check in date:<br>
 	<input  onchange = "checkDate()" type = "Date" name = "inDate" id = "indate" required>
 	<br>Check out date: <br>
 	<input onchange = "checkDate()" type = "Date" name = "outDate" id = "outdate" required>
+	<br>
+	<input type ="submit">
+	</form>
+	*/
+	
+	
+</script>
+
+<form id = "dateinput" method="post" action="AdminServlet">
+	Check in date:<br>
+	<input   type = "Date" name = "inDate" id = "indate" required>
+	<br>Check out date: <br>
+	<input  type = "Date" name = "outDate" id = "outdate" required>
 	<br>
 	<input type ="submit">
 
@@ -63,7 +78,7 @@
 
 	//document.getElementById("inDate").onchange = function(){checkDate()};
 //	document.getElementById("outDate").onchange = function(){checkDate()};
-	function checkDate(){
+	/*function checkDate(){
 		
 		var indate = document.getElementById("indate").value;
 		var inVarDate = new Date (indate);
@@ -78,7 +93,7 @@
 			alert ("Invalid date range. Check out date has to be after check in date");
 			document.forms["dateinput"].reset();
 		}
-	}
+	}*/
 </script>
 </body>
 </html>

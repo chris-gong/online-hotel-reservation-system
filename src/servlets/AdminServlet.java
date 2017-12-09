@@ -53,6 +53,9 @@ public class AdminServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 		
+		request.setAttribute("indate", inDate);
+		request.setAttribute("outdate", outDate);
+		
 		request.getRequestDispatcher("/StatsServlet").forward(request,response);
 	
 	}

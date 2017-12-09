@@ -35,13 +35,25 @@ public class StatsServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 		
+		String temp1 = (String)request.getAttribute("indate");
+		String temp2 = (String)request.getAttribute("outdate");
 		
-		String query1 = "Select t4.type, t6.hotel_id, t6.maxAV from\n" + 
+		
+		String inDate = "'" + temp1 + "'";
+		String outDate = "'" + temp2 + "'";
+		System.out.println(inDate + " " + outDate);
+		
+		
+		String query1 = "\n" + 
+				"\n" + 
+				"Select t4.type, t6.hotel_id, t6.maxAV from\n" + 
 				"(Select t3.hotel_id, MAX(av) as maxAV from\n" + 
 				"(Select t2.type,t2.hotel_id, avg(rating) AS av from\n" + 
 				"    (Select r.type, rr.* from rooms r, room_review rr\n" + 
-				"    where r.hotel_id=rr.hotel_id AND\n" + 
-				"    r.room_no=rr.room_no \n" + 
+				"      where r.hotel_id=rr.hotel_id AND\n" + 
+				"      r.room_no=rr.room_no AND\n" + 
+				"      rr.inDate between  " + inDate +"and " +  outDate + " AND\n" + 
+				"      rr.outDate between " + inDate + " and " + outDate + " \n" + 
 				"    )t2\n" + 
 				"group by t2.type, t2.hotel_id) t3\n" + 
 				"group by t3.hotel_id) t6\n" + 
@@ -88,10 +100,7 @@ public class StatsServlet extends HttpServlet {
 		request.setAttribute("maxs", maxs);
 		
 		
-		request.getRequestDispatcher("/stats.jsp").forward(request,response);
-		
-		
-		
+		request.getRequestDispatcher("/stats.jsp").forward(request,response);		
 
 	}
 

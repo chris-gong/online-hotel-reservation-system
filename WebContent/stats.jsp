@@ -13,21 +13,6 @@
 </head>
 <body>
 
-<script>
-	
-	// alert("hi");
-	 ArrayList<String> type = (ArrayList<String>) request.getAttribute("types"); 
-	alert (type.get(0));
-	document.getElementById('test').appendChild(type.get(0));
-	 
-	 var len = type.size();
-	 
-	/* for (var i = 0; i < len; i++){
-		 document.getElee
-	 }*/
-
-</script>
-
 
 <div id = "first">
 	<form id = "firstquery" method = "post" action = "StatsServlet">
