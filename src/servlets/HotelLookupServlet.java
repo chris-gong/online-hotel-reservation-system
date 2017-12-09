@@ -122,8 +122,6 @@ public class HotelLookupServlet extends HttpServlet {
 	 *      response)
 	 */
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
 		String country = request.getParameter("country");
 		String state = request.getParameter("state");
 		String city = request.getParameter("city");

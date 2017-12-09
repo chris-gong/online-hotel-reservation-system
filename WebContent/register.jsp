@@ -11,7 +11,7 @@
 <body>
 
 Register here!
-	<form id= "registerinfo" class = "cmxform" method="post" action="RegisterServlet">
+	<form id= "registerinfo" class = "cmxform" method="post" action="Register">
 		First Name: (at least 2 characters) <br>
 		<input type = "text" name = "rfname" minlength = "2" required>
 		<br>

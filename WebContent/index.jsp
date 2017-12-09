@@ -10,13 +10,13 @@
 <%-- Allow user to enter valid email and password to login --%>
 
 <body>
-	<form method="post" action="LoginServlet">
+	<form method="post" action="Home">
 		Email: <br> <input type="text" name="email" required> <br>
 
 		Password: <br> <input type="password" name="password" required> <br>
 
 		<input type="submit"> <br> Don't have an account? Click <a
-			href="register.jsp">here</a> to register!
+			href="/HotelReservations/Register">here</a> to register!
 
 	</form>
 	<%
