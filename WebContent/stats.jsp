@@ -23,17 +23,6 @@
 <br>
 
 <div id  = "firstquery">
-
-	<table id = "t1" border = "1" style="float: left;">
-		<tr>
-			<th>Type</th>
-			<c:forEach items = "${types}" var = "type"> 
-				<tr>
-					<td>${type}</td>
-				
-				</tr>
-			</c:forEach>
-	</table>
 	<table border = "1" style="float: left;">
 		<th>HotelID</th>
 			<c:forEach items = "${hotelids}" var = "id"> 
@@ -43,6 +32,16 @@
 				</tr>
 			</c:forEach> 
 	</table>
+	<table id = "t1" border = "1" style="float: left;">
+		<th>Type</th>
+			<c:forEach items = "${types}" var = "type"> 
+				<tr>
+					<td>${type}</td>
+				
+				</tr>
+			</c:forEach>
+	</table>
+
 	<table border = "1" >
 		<th>Max Rating</th>			
 			<c:forEach items = "${maxs}" var = "mx"> 
@@ -58,6 +57,82 @@
 </div>
 <br>
 
+<div id  = "thirdquery">
+	<table border = "1" style="float: left;">
+		<th>HotelID</th>
+			<c:forEach items = "${hotel_id}" var = "id"> 
+				<tr>
+					<td>${id}</td>
+				
+				</tr>
+			</c:forEach> 
+	</table>
+
+	<table id = "t3" border = "1" style="float: left;">
+		<tr>
+			<th>BType</th>
+			<c:forEach items = "${b_type}" var = "type"> 
+				<tr>
+					<td>${type}</td>
+				
+				</tr>
+			</c:forEach>
+	</table>
+
+	
+	
+  <table border = "1" >
+		<th>Max Rating</th>			
+			<c:forEach items = "${mx}" var = "mxs"> 
+				<tr>
+					<td>${mxs}</td>
+				
+				</tr>
+			</c:forEach> 
+			
+	</table>
+
+
+</div>
+
+<br>
+<div id  = "fourthquery">
+	<table border = "1" style="float: left;">
+		<th>HotelID</th>
+			<c:forEach items = "${hotel_id4}" var = "id"> 
+				<tr>
+					<td>${id}</td>
+				
+				</tr>
+			</c:forEach> 
+	</table>
+
+	<table id = "t3" border = "1" style="float: left;">
+		<tr>
+			<th>BType</th>
+			<c:forEach items = "${b_type4}" var = "type"> 
+				<tr>
+					<td>${type}</td>
+				
+				</tr>
+			</c:forEach>
+	</table>
+
+	
+	
+  <table border = "1" >
+		<th>Max Rating</th>			
+			<c:forEach items = "${mx4}" var = "mxs"> 
+				<tr>
+					<td>${mxs}</td>
+				
+				</tr>
+			</c:forEach> 
+			
+	</table>
+
+
+</div>
 
 
 
