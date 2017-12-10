@@ -2,6 +2,7 @@ package servlets;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,6 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import server.*;
 
@@ -36,7 +38,16 @@ public class LoginServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		request.getRequestDispatcher("/index.jsp").forward(request, response);
+		HttpSession session = request.getSession(true);
+		//if the user is already logged in, then just send him/her to the homepage
+		if(session.getAttribute("user_id") != null){
+			System.out.println(session.getAttribute("user_id") + " " + session.getAttribute("name"));
+			request.setAttribute("name", session.getAttribute("name"));
+			request.getRequestDispatcher("/home.jsp").forward(request, response);
+		}
+		else{
+			request.getRequestDispatcher("/index.jsp").forward(request, response);
+		}
 	}
 
 	/**
@@ -50,7 +61,7 @@ public class LoginServlet extends HttpServlet {
 		String password = request.getParameter("password");
 
 		String sql;
-		sql = "SELECT password, firstname, lastname from users where email='" + email + "'";
+		sql = "SELECT user_id, password, firstname, lastname from users where email='" + email + "'";
 		
 		ResultSet rs = LocalDbConnect.executeSelectQuery(sql);
 		try {
@@ -62,8 +73,12 @@ public class LoginServlet extends HttpServlet {
 				String s=rs.getString("password");
 				if(s.equals(password)) {
 					String name = rs.getString("firstname")+" "+rs.getString("lastname");
+					String userId = rs.getString("user_id");
 					System.out.println(name);
 					request.setAttribute("name", name);
+					HttpSession session = request.getSession(true);
+					session.setAttribute("user_id", userId);
+					session.setAttribute("name", name);
 					request.getRequestDispatcher("/home.jsp").forward(request, response);
 				}else{
 					request.setAttribute("message", "Invalid Password");
