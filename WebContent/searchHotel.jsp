@@ -12,7 +12,61 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
 </head>
+<script>
+
+	function setMin(){
+		var today = new Date();
+		
+		var tomorrow = new Date();
+		tomorrow.setDate(tomorrow.getDate() + 1);
+		
+		var ddd = tomorrow.getDate();
+		var mmm = tomorrow.getMonth()+1; //January is 0!
+		var yyyyy = tomorrow.getFullYear();
+		
+		var dd = today.getDate();
+		var mm = today.getMonth()+1; //January is 0!
+		var yyyy = today.getFullYear();
+		 if(dd<10){
+		        dd='0'+dd
+		    } 
+		    if(mm<10){
+		        mm='0'+mm
+		    } 
+		    
+		    if(ddd<10){
+		        ddd='0'+ddd
+		    } 
+		    if(mmm<10){
+		        mmm='0'+mmm
+		    } 
+
+		today = yyyy+'-'+mm+'-'+dd;
+		tomorrow = yyyyy+'-'+mmm+'-'+ddd;
+		document.getElementById("indate").setAttribute("min", today);
+		document.getElementById("outdate").setAttribute("min", tomorrow);
+	}
+	window.onload = setMin;
+	
+	
+	
+	/*using the scripts:
+		<form id = "dateinput" method="post" action="AdminServlet">
+	Check in date:<br>
+	<input  onchange = "checkDate()" type = "Date" name = "inDate" id = "indate" required>
+	<br>Check out date: <br>
+	<input onchange = "checkDate()" type = "Date" name = "outDate" id = "outdate" required>
+	<br>
+	<input type ="submit">
+	</form>*/
+	
+	
+	
+</script>
+
+
 <%-- User selects options for kind of hotel they want to reserve --%>
+
 
 
 <body>
@@ -37,8 +91,8 @@
 			</select>
 		</div>
 
-		<label>Check in Date:</label> <input type="Date" name="inDate" required/><br>
-		<label>Check out Date:</label> <input type="Date" name="outDate" required/><br>
+		<label>Check in Date:</label> <input type="Date" name="inDate" onchange = "checkDate()"  id = "indate" required/><br>
+		<label>Check out Date:</label> <input type="Date" name="outDate" onchange = "checkDate()" id = "outdate" required/><br>
 
 		Number of rooms: <select id="num_rooms" name="num_rooms" >
 			<c:forEach begin="1" end="3" varStatus="loop">
@@ -138,5 +192,25 @@
 			room_count = $(this).val();
 		});
 	});
+	
+	
+	document.getElementById("inDate").onchange = function(){checkDate()};
+	document.getElementById("outDate").onchange = function(){checkDate()};
+	function checkDate(){
+		
+		var indate = document.getElementById("indate").value;
+		var inVarDate = new Date (indate);
+		
+		var todayDate = new Date(); //today's date
+		
+		var outdate = document.getElementById("outdate").value;
+		var outVarDate = new Date (outdate);
+	
+		
+		if (inVarDate >= outVarDate ){	
+			alert ("Invalid date range. Check out date has to be after check in date");
+			document.forms["dateinput"].reset();
+		}
+	}
 </script>
 </html>
