@@ -24,19 +24,21 @@
 				${hotel.getName()}
 				<button type="button" class="book_btn"
 					data-hotel_id="${hotel.getId()}"
-					data-hotel_name="${hotel.getName()}">Book Room(s)</button>
+					data-hotel_name="${hotel.getName()}"
+					data-num_rooms=${room_count}>Book Room(s)</button>
 			</div>
 		</c:forEach>
 	</div>
 </body>
 <script type="text/javascript">
-	function sendHotelInfo(id, name, caps, in_date, out_date) {
+	function sendHotelInfo(id, name, caps, num_rooms, in_date, out_date) {
 		$.ajax({
 			url : 'HotelSelect',
 			data : {
 				id : id,
 				name : name,
 				caps : caps,
+				num_rooms : num_rooms,
 				in_date : in_date,
 				out_date : out_date
 			},
@@ -71,12 +73,13 @@
 			var name = $(this).data("hotel_name");
 			var in_date = $("#caps .in_date").html();
 			var out_date = $("#caps .out_date").html();
+			var num_rooms = $(this).data("num_rooms");
 			var caps = Array();
 			$("#caps .cap").each(function(){
 				caps.push($(this).html());
 			});
 			caps = JSON.stringify(caps);
-			sendHotelInfo(id, name,caps, in_date, out_date);
+			sendHotelInfo(id, name,caps, num_rooms, in_date, out_date);
 			
 			
 			//window.location.href = '/HotelReservations/index.jsp';

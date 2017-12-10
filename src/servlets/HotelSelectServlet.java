@@ -39,19 +39,42 @@ public class HotelSelectServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		/*System.out.println("Hotel Select doGet method");
+		/*
+		 * Basic flow of the room reservations:
+		 * Step ONE: 
+		 * User selects rooms one by one from a list of rooms gathered from res_details
+		 * where the entries' dates do not conflict with the requested dates
+		 * Step TWO:
+		 * Keep track of this room entry's room_no so that the user can not select again 
+		 * in cases where 2 or more rooms were requested
+		 * Step THREE:
+		 * After bundling all of the requested rooms, check if all them are available one
+		 * last time aka the requested dates do not conflict with any entries in res_details table
+		 * Step FOUR: 
+		 * Go to service/breakfast selection
+		 */
+		//Step ONE:
+		System.out.println("Hotel Select doGet method");
 		ObjectMapper mapper = new ObjectMapper();
-		String[] caps =mapper.readValue(request.getParameter("caps"),String[].class);
+		String[] caps = mapper.readValue(request.getParameter("caps"),String[].class);
+		String[] requestedRooms = mapper.readValue(request.getParameter("req_rooms"),String[].class);
 		String id = request.getParameter("hotel_id");
 		String name = request.getParameter("name");
 		String roomNum = request.getParameter("room_num");
+		String inDate = request.getParameter("in_date");
+		String outDate = request.getParameter("out_date");
+		for(String s : caps){
+			System.out.print(s + " ");
+		}
+		System.out.println(requestedRooms);
+		System.out.println("in-date: " + inDate + " out-date: " + outDate);
 		//check if user is on the last room
 		if(caps.length == Integer.parseInt(roomNum)){
 			
 		}
 		else{
 			
-		}*/
+		}
 	}
 
 	/**
@@ -64,11 +87,13 @@ public class HotelSelectServlet extends HttpServlet {
 		String name = request.getParameter("name");
 		String inDate = request.getParameter("in_date");
 		String outDate = request.getParameter("out_date");
+		int numRooms = Integer.parseInt(request.getParameter("num_rooms"));
 		System.out.println(inDate + " " + outDate);
 		ObjectMapper mapper = new ObjectMapper();
+		//line below needed for jackson library to convert jsonobject to string
 		mapper.setVisibility(JsonMethod.FIELD, Visibility.ANY);
-		String[] caps = mapper.readValue(request.getParameter("caps"),String[].class);
-		int numRooms = caps.length;
+		String caps = request.getParameter("caps");
+		String[] requestedRooms = new String[numRooms];
 		//check if hotel clicked on has enough rooms available at the specified capacities
 		//using stored procedure
 		String checkAvailQry = "call check_availability(?, ?, ?, ?)";
@@ -91,8 +116,9 @@ public class HotelSelectServlet extends HttpServlet {
 					out.println(mapper.writeValueAsString(data));
 				}
 				else{
-					String url = "/HotelReservations/HotelSelect?hotel_id="+id+"&name="+name+"&caps="+"&in_date="+inDate
-							+"&out_date="+outDate+"&caps="+caps+"&room_num=1";
+					String reqRooms = mapper.writeValueAsString(requestedRooms);
+					String url = "/HotelReservations/HotelSelect?hotel_id="+id+"&name="+name+"&in_date="+inDate
+							+"&out_date="+outDate+"&caps="+caps+"&room_num=1"+"&req_rooms="+reqRooms;
 					data.put("message", "");
 					data.put("url", url);
 					System.out.println(mapper.writeValueAsString(data));
