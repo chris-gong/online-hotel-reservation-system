@@ -5,6 +5,9 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
+import java.util.ArrayList;
+import java.sql.CallableStatement;
 
 public class LocalDbConnect {
 	//STEP 1: Identifying credentials
@@ -55,6 +58,46 @@ public class LocalDbConnect {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return 0;
+		}
+	}
+	//assumes the format of the query is "call name_of_proc(in?, in?, ....., out?, out?, .......)"
+	public static ArrayList executeStoredProcedure(String query, ArrayList<String> inParams,ArrayList<Integer> outParams){
+		Connection conn = null;
+		Statement stmt = null;
+		try {
+			// STEP 2: Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
+
+			// STEP 3: Open a connection
+			System.out.println("Connecting to database...");
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+			stmt = conn.createStatement();
+			
+			//STEP 4: Register in and out parameters
+			CallableStatement cStmt = conn.prepareCall("{"+query+"}");
+			for(int i = 1; i <= inParams.size(); i++){
+				cStmt.setString(i, inParams.get(i-1));
+			}
+			for(int i = inParams.size() + 1; i <= inParams.size() + outParams.size(); i++){
+				cStmt.registerOutParameter(i, outParams.get(i - inParams.size() - 1));
+			}
+			//STEP 5: Call the procedure
+			boolean hasResults = cStmt.execute();
+			if(hasResults){
+				//for now, assume all the output parameters are integers
+				ArrayList results = new ArrayList();
+				for(int i = inParams.size() + 1; i <= inParams.size() + outParams.size(); i++){
+					results.add(cStmt.getInt(i)); 
+				}
+				return results;
+			}
+			else{
+				return null;
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
 		}
 	}
 }
