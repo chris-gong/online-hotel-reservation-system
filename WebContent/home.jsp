@@ -54,10 +54,12 @@ li a:hover {
 
 	<br></br>
 
-	<form method="get" action="index.jsp">
+	<form method="get" action="manageAccount.jsp">
 		<input type="submit" value="Manage Account">
 
 	</form>
+	
+	
 
 </body>
 <script>
