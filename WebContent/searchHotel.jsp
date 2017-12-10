@@ -90,7 +90,6 @@
 			<label>City:</label> <select size="1" id="cities" title="" name="city" required>
 			</select>
 		</div>
-
 		<label>Check in Date:</label> <input type="Date" name="inDate" onchange = "checkDate()"  id = "indate" required/><br>
 		<label>Check out Date:</label> <input type="Date" name="outDate" onchange = "checkDate()" id = "outdate" required/><br>
 
@@ -208,8 +207,9 @@
 	
 		
 		if (inVarDate >= outVarDate ){	
-			alert ("Invalid date range. Check out date has to be after check in date");
-			document.forms["dateinput"].reset();
+			alert ("Invalid date range selected. The check-out date has to be after the check-in date");
+			$("#indate").val('');
+			$("#outdate").val('');
 		}
 	}
 </script>
