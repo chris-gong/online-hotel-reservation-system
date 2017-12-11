@@ -30,7 +30,7 @@ if(((String)request.getAttribute("change")).equals("Email")){ %>
 	Old Email:
 	<input type="email" name="old_email" required> <br></br>
 	New Email:
-	<input type="email" name="new_password" required><br></br>
+	<input type="email" name="new_email" required><br></br>
 	<input type = "submit">
 	</form>
 <% } %>

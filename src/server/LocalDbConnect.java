@@ -60,6 +60,28 @@ public class LocalDbConnect {
 			return 0;
 		}
 	}
+	//Literally the same thing as insert. might want to change later
+	public static int executeUpdateQuery(String query){
+		Connection conn = null;
+		Statement stmt = null;
+		try {
+			// STEP 2: Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
+
+			// STEP 3: Open a connection
+			System.out.println("Connecting to database...");
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+			stmt = conn.createStatement();
+			
+			//STEP 4: Execute query
+			int updated = stmt.executeUpdate(query); //returns 0 or 1 depending on success
+			return updated;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
 	//assumes the format of the query is "call name_of_proc(in?, in?, ....., out?, out?, .......)"
 	public static ArrayList executeStoredProcedure(String query, ArrayList<String> inParams,ArrayList<Integer> outParams){
 		Connection conn = null;

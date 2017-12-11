@@ -10,10 +10,17 @@
 	What would you like to change?
 
 	<form action="Manage" method="get">
-		<input type="submit" value="Change Password" name="change_password"> <br></br>
-		<input type="submit" value="Change Email" name="change_email"> <br></br>
-		<input type="submit" value="Change Address" name="change_address"> <br></br>
-		<input type="submit" value="Change Credit Card" name="change_card">
+		<input type="submit" value="Change Password" name="change_password">
+		<br></br> <input type="submit" value="Change Email"
+			name="change_email"> <br></br> <input type="submit"
+			value="Change Address" name="change_address"> <br></br> <input
+			type="submit" value="Change Credit Card" name="change_card">
 	</form>
+	<% 
+		String updated = (String) request.getAttribute("update");
+		if (updated != null) {
+			out.print(updated);
+		}
+	%>
 </body>
 </html>
