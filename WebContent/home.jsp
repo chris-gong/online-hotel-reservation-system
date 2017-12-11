@@ -47,7 +47,7 @@ li a:hover {
 
 	<br></br>
 
-	<form method="get" action="index.jsp"> 
+	<form method="get" action="Reviews"> 
 		<input type="submit" value="Make Review">
 
 	</form>
