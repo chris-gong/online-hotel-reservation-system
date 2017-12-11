@@ -61,7 +61,7 @@ public class LoginServlet extends HttpServlet {
 		String password = request.getParameter("password");
 
 		String sql;
-		sql = "SELECT user_id, password, firstname, lastname,isAdmin from users where email='" + email + "'";
+		sql = "SELECT user_id, password, firstname, lastname,is_admin from users where email='" + email + "'";
 		
 		ResultSet rs = LocalDbConnect.executeSelectQuery(sql);
 		try {
@@ -71,7 +71,7 @@ public class LoginServlet extends HttpServlet {
 			}
 			else {
 				String s=rs.getString("password");
-				String admincheck=rs.getString("isAdmin");
+				String admincheck=rs.getString("is_admin");
 				if(s.equals(password) && Integer.parseInt(admincheck)==1) {
 					String name = rs.getString("firstname")+" "+rs.getString("lastname");
 					String userId = rs.getString("user_id");
@@ -83,7 +83,7 @@ public class LoginServlet extends HttpServlet {
 					request.getRequestDispatcher("/admin.jsp").forward(request, response);
 					
 				}
-				if(s.equals(password)) {
+				else if(s.equals(password)) {
 					String name = rs.getString("firstname")+" "+rs.getString("lastname");
 					String userId = rs.getString("user_id");
 					System.out.println(name);
