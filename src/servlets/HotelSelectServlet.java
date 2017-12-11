@@ -16,8 +16,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.codehaus.jackson.annotate.JsonAutoDetect.Visibility;
 import org.codehaus.jackson.annotate.JsonMethod;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.type.TypeFactory;
 
 import entities.Hotel;
+import entities.Room;
 import server.LocalDbConnect;
 import org.json.JSONObject;
 /**
@@ -57,23 +59,52 @@ public class HotelSelectServlet extends HttpServlet {
 		System.out.println("Hotel Select doGet method");
 		ObjectMapper mapper = new ObjectMapper();
 		String[] caps = mapper.readValue(request.getParameter("caps"),String[].class);
-		String[] requestedRooms = mapper.readValue(request.getParameter("req_rooms"),String[].class);
-		String id = request.getParameter("hotel_id");
+		ArrayList<String> requestedRooms = mapper.readValue(request.getParameter("req_rooms"),
+				TypeFactory.defaultInstance().constructCollectionType(List.class, String.class)); //list of room_no already requested
+		ArrayList<Room> availableRooms = new ArrayList<Room>(); //list of rooms to be send to the user to be viewed
+		int id = Integer.parseInt(request.getParameter("hotel_id"));
 		String name = request.getParameter("name");
-		String roomNum = request.getParameter("room_num");
+		int roomNum = Integer.parseInt(request.getParameter("room_num"));
 		String inDate = request.getParameter("in_date");
 		String outDate = request.getParameter("out_date");
 		for(String s : caps){
 			System.out.print(s + " ");
 		}
-		System.out.println(requestedRooms);
+		System.out.println();
+		System.out.println(requestedRooms.size() + " " + roomNum);
 		System.out.println("in-date: " + inDate + " out-date: " + outDate);
 		//check if user is on the last room
-		if(caps.length == Integer.parseInt(roomNum)){
+		if(requestedRooms.size() == roomNum){
 			
 		}
 		else{
-			
+			String availRoomsQry = "select * from rooms where capacity >= '"+caps[roomNum-1]+"' "
+					+ "and hotel_id ='"+id+"'"
+					+ " and (room_no, hotel_id) not in (select distinct room_no, hotel_id from res_details "
+					+ "where ((in_date <= '"+outDate+"') and (out_date >= '"+inDate+"')) and hotel_id ='"+id+"')";
+			for(String reqRoom : requestedRooms){
+				availRoomsQry += " and (room_no, hotel_id)not in(select '"+reqRoom+"' as 'room_no', '"+id+"' as 'hotel_id') ";
+			}
+			availRoomsQry += ";";
+			System.out.println(availRoomsQry);
+			try{
+				ResultSet rs = LocalDbConnect.executeSelectQuery(availRoomsQry);
+				while(rs.next()){
+					int room_no = rs.getInt("room_no");
+					int floor_num = rs.getInt("floor_no");
+					String description = rs.getString("description");
+					String type = rs.getString("type");
+					int price = rs.getInt("price"); 
+					int cap = rs.getInt("capacity");
+					Room room = new Room(id, room_no, floor_num, price, description, type, cap);
+					availableRooms.add(room);
+				}
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+			request.setAttribute("hotel_name", name);
+			request.setAttribute("rooms", availableRooms);
+			request.getRequestDispatcher("/selectRoom.jsp").forward(request, response);
 		}
 	}
 
@@ -93,7 +124,7 @@ public class HotelSelectServlet extends HttpServlet {
 		//line below needed for jackson library to convert jsonobject to string
 		mapper.setVisibility(JsonMethod.FIELD, Visibility.ANY);
 		String caps = request.getParameter("caps");
-		String[] requestedRooms = new String[numRooms];
+		ArrayList<String> requestedRooms = new ArrayList<String>();
 		//check if hotel clicked on has enough rooms available at the specified capacities
 		//using stored procedure
 		String checkAvailQry = "call check_availability(?, ?, ?, ?)";
