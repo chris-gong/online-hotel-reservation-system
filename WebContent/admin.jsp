@@ -76,9 +76,9 @@
 
 <script>
 
-	//document.getElementById("inDate").onchange = function(){checkDate()};
-//	document.getElementById("outDate").onchange = function(){checkDate()};
-	/*function checkDate(){
+	document.getElementById("indate").onchange = function(){checkDate()};
+	document.getElementById("outdate").onchange = function(){checkDate()};
+	function checkDate(){
 		
 		var indate = document.getElementById("indate").value;
 		var inVarDate = new Date (indate);
@@ -93,7 +93,7 @@
 			alert ("Invalid date range. Check out date has to be after check in date");
 			document.forms["dateinput"].reset();
 		}
-	}*/
+	}
 </script>
 </body>
 </html>
