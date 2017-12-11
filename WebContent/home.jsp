@@ -47,7 +47,7 @@ li a:hover {
 
 	<br></br>
 
-	<form method="get" action="Reviews"> 
+	<form method="get" action="Review"> 
 		<input type="submit" value="Make Review">
 
 	</form>
