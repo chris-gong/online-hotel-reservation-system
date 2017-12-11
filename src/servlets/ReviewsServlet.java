@@ -18,7 +18,7 @@ import server.LocalDbConnect;
  * Servlet implementation class Reservations
  */
 
-@WebServlet("Reviews")
+@WebServlet(urlPatterns="/Reviews")
 public class ReviewsServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        

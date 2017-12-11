@@ -16,7 +16,7 @@ import server.LocalDbConnect;
 /**
  * Servlet implementation class StatsServlet
  */
-@WebServlet("/StatsServlet")
+@WebServlet(urlPatterns="/StatsServlet")
 public class StatsServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
