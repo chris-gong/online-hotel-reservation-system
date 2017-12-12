@@ -49,12 +49,74 @@ if(((String)request.getAttribute("change")).equals("Address")){ %>
 <% 
 if(((String)request.getAttribute("change")).equals("Credit Card")){ %>
 <form id= "manageinfo" class = "cmxform" method="post" action="Manage">
-	Old Credit Card:
-	<input type="text" name="old_card" minlength="16" required> <br></br>
-	New Credit Card:
-	<input type="text" name="new_card" minlength="16" required><br></br>
+	Old Credit Card Number:
+	<input type="text" name="old_card" required> <br></br>
+	Old Security Code
+	<input type="text" name="old_sec" minlength="3" maxlength="3" required> <br></br> <br></br>
+	New Credit Card Number:
+	<input type="text" name="new_card" required><br></br>
+	New Security Code:
+	<input type="text" name="new_sec" minlength="3" maxlength="3" required><br></br>
+	New Expiration Date:
+	<input type="Date" name="new_date" required><br></br>
+	New Billing Address:
+	<input type="text" name="new_address" required><br></br>
+	New Name on Card:
+	<input type="text" name="new_name" minlength="2" required><br></br>
+	New Type:
+	<input type="text" name="new_type" required><br></br>
+	<input type = "submit">
+	</form>
+<% } %>
+
+<% 
+if(((String)request.getAttribute("change")).equals("Number")){ %>
+<form id= "manageinfo" class = "cmxform" method="post" action="Manage">
+	Old Number:
+	<input type="text" name="old_num" required> <br></br>
+	New Number:
+	<input type="text" name="new_num" required><br></br>
 	<input type = "submit">
 	</form>
 <% } %>
 </body>
+<script>
+
+	function setMin(){
+		var today = new Date();
+		
+		var tomorrow = new Date();
+		tomorrow.setDate(tomorrow.getDate() + 1);
+		
+		var ddd = tomorrow.getDate();
+		var mmm = tomorrow.getMonth()+1; //January is 0!
+		var yyyyy = tomorrow.getFullYear();
+		
+		var dd = today.getDate();
+		var mm = today.getMonth()+1; //January is 0!
+		var yyyy = today.getFullYear();
+		 if(dd<10){
+		        dd='0'+dd
+		    } 
+		    if(mm<10){
+		        mm='0'+mm
+		    } 
+		    
+		    if(ddd<10){
+		        ddd='0'+ddd
+		    } 
+		    if(mmm<10){
+		        mmm='0'+mmm
+		    } 
+
+		today = yyyy+'-'+mm+'-'+dd;
+		tomorrow = yyyyy+'-'+mmm+'-'+ddd;
+		document.getElementById("new_date").setAttribute("min", today);
+	}
+	window.onload = setMin;
+
+	
+	
+	
+</script>
 </html>
