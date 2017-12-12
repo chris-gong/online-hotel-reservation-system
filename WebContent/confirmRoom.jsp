@@ -61,7 +61,14 @@
 			Card Number: <input type="text" name="card_num" minlength="16" required> <br>
 			Security Code: <input type="text" name="card_sec" required> <br>
 			Card Type: <input type="text" name="card_type" required> <br> 
-			Expiration Date: <input type="Date" name="card_exp_date" required> <br>
+			Expiration Date: <input type="Date" name="card_exp_date" required> 
+			<%
+				String expMessage = (String) request.getParameter("exp_message");
+				if(expMessage != null){
+					out.println(expMessage);
+				}
+			%>
+			<br>
 		</div>
 		<input type="submit">
 	</form>

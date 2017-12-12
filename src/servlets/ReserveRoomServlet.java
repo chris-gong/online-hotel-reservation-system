@@ -153,7 +153,7 @@ public class ReserveRoomServlet extends HttpServlet {
 					System.out.println("Card is expired");
 					String message = "Card is expired";
 					response.sendRedirect("/HotelReservations/ReservedRoomSummary?hotel_id="+id+"&name="+name+
-							"&in_date="+inDate+"&out_date="+outDate+"&req_rooms="+reqRoomString+"&message="+message);
+							"&in_date="+inDate+"&out_date="+outDate+"&req_rooms="+reqRoomString+"&exp_message="+message);
 					return;
 				}
 			}catch(Exception e){
