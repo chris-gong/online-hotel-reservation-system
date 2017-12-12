@@ -61,6 +61,7 @@ public class HotelSelectServlet extends HttpServlet {
 		ObjectMapper mapper = new ObjectMapper();
 		String message = request.getParameter("message");
 		System.out.println("message: " + message);
+		System.out.println("JSON string form of req_rooms: " +request.getParameter("req_rooms"));
 		String[] caps = mapper.readValue(request.getParameter("caps"),String[].class);
 		ArrayList<String> requestedRooms = mapper.readValue(request.getParameter("req_rooms"),
 				TypeFactory.defaultInstance().constructCollectionType(List.class, String.class)); //list of room_no already requested
