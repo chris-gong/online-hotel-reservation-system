@@ -32,6 +32,7 @@
 	</div>
 	<div id="avail_rooms" class="container-fluid">
 		Displaying all available rooms for ${hotel_name} <br>
+		Please select a room for at least ${caps[room_num-1]} people
 		<c:if test="${empty rooms}">
 			<div id="msg">
 				No more rooms available!
