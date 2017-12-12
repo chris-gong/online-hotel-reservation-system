@@ -96,22 +96,38 @@ public class ManageAccountServlet extends HttpServlet {
 
 		}else if(oldEmail!=null) {
 			String newEmail = request.getParameter("new_email");
-			String emailCheck = "select email from users where email ='"+oldEmail+"'and user_id ="+ userId ;
-			ResultSet rs = LocalDbConnect.executeSelectQuery(emailCheck);
+			String dupEmailCheck = "select email from users where email ='"+newEmail+"'";
+			ResultSet rs2 = LocalDbConnect.executeSelectQuery(dupEmailCheck);
 			try {
-				//if user entered in valid old email
-				if(rs.next()) {
-					String updateEmail = "update users set email ='"+newEmail+"' where user_id ="+ userId; 
-					LocalDbConnect.executeUpdateQuery(updateEmail);
-					request.setAttribute("update", "Email Updated");
+				if(rs2.next()) {
+					//user entered existing email
+					request.setAttribute("update", "This Email already exists");
 					request.getRequestDispatcher("/manageAccount.jsp").forward(request, response);
 				}else {
-					request.setAttribute("update", "Wrong old email");
-					request.getRequestDispatcher("/manageAccount.jsp").forward(request, response);
+					String emailCheck = "select email from users where email ='"+oldEmail+"'and user_id ="+ userId ;
+					ResultSet rs = LocalDbConnect.executeSelectQuery(emailCheck);
+					try {
+						//if user entered in valid old email
+						if(rs.next()) {
+							
+							String updateEmail = "update users set email ='"+newEmail+"' where user_id ="+ userId; 
+							LocalDbConnect.executeUpdateQuery(updateEmail);
+							request.setAttribute("update", "Email Updated");
+							request.getRequestDispatcher("/manageAccount.jsp").forward(request, response);
+						}else {
+							request.setAttribute("update", "Wrong old email");
+							request.getRequestDispatcher("/manageAccount.jsp").forward(request, response);
+						}
+					}catch(SQLException e) {
+						e.printStackTrace();
+					}
+					
 				}
-			}catch(SQLException e) {
-				e.printStackTrace();
+			}catch(Exception e) {
+				
 			}
+			
+
 		}else if(oldAddress!=null) {
 			String newAddress = request.getParameter("new_address");
 			String addressCheck = "select address from users where address ='"+oldAddress+"'and user_id ="+ userId ;

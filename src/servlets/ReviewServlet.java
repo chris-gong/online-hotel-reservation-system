@@ -82,6 +82,15 @@ public class ReviewServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		
+		//get selected invoice num
+		String invoiceNum = request.getParameter("invoice_num");
+		System.out.println("selected review: "  + invoiceNum);
+		
+		request.setAttribute("invoiceNum", invoiceNum);
+		
+		request.getRequestDispatcher("/MakeReviewServlet").forward(request,response);	
+
+		
 		
 	}
 

@@ -56,11 +56,15 @@ Select which reservation you want to review:
 
 <br>
 <h1>Select which invoice number you want to review:</h1>
-<select name="invoice_num">
-    <c:forEach items="${invoice}" var="in">
-        <option value="${in}"><c:out value="${in}" /></option>
-    </c:forEach>
-</select>
+
+<form name = "form" id = "form" action = "Review" method = "post">
+	<select name="invoice_num" id = "invoice_num">
+	    <c:forEach items="${invoice}" var="in">
+	        <option value="${in}"><c:out value="${in}" /></option>
+	    </c:forEach>
+	</select>
+	<button type = "submit">Make review!</button>
+</form>
 
 
 </body>
