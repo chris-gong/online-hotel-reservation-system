@@ -38,6 +38,7 @@ public class ManageAccountServlet extends HttpServlet {
 		String isEmail = request.getParameter("change_email");
 		String isAddress = request.getParameter("change_address");
 		String isCard = request.getParameter("change_card");
+		String isNumber=request.getParameter("change_number");
 
 		if (isPassword != null) {
 			request.setAttribute("change", "Password");
@@ -52,6 +53,10 @@ public class ManageAccountServlet extends HttpServlet {
 			request.setAttribute("change", "Credit Card");
 			request.getRequestDispatcher("/changeCredential.jsp").forward(request, response);
 		}
+		else if (isNumber != null) {
+			request.setAttribute("change", "Number");
+			request.getRequestDispatcher("/changeCredential.jsp").forward(request, response);
+		}
 	}
 
 	/**
@@ -62,6 +67,8 @@ public class ManageAccountServlet extends HttpServlet {
 		String oldEmail = request.getParameter("old_email");
 		String oldAddress = request.getParameter("old_address");
 		String oldCard = request.getParameter("old_card");
+		String oldSec = request.getParameter("old_sec");
+		String oldNumber=request.getParameter("old_num");
 		
 		HttpSession sess = request.getSession(true);
 		String userId = (String)sess.getAttribute("user_id");
@@ -89,22 +96,38 @@ public class ManageAccountServlet extends HttpServlet {
 
 		}else if(oldEmail!=null) {
 			String newEmail = request.getParameter("new_email");
-			String emailCheck = "select email from users where email ='"+oldEmail+"'and user_id ="+ userId ;
-			ResultSet rs = LocalDbConnect.executeSelectQuery(emailCheck);
+			String dupEmailCheck = "select email from users where email ='"+newEmail+"'";
+			ResultSet rs2 = LocalDbConnect.executeSelectQuery(dupEmailCheck);
 			try {
-				//if user entered in valid old email
-				if(rs.next()) {
-					String updateEmail = "update users set email ='"+newEmail+"' where user_id ="+ userId; 
-					LocalDbConnect.executeUpdateQuery(updateEmail);
-					request.setAttribute("update", "Email Updated");
+				if(rs2.next()) {
+					//user entered existing email
+					request.setAttribute("update", "This Email already exists");
 					request.getRequestDispatcher("/manageAccount.jsp").forward(request, response);
 				}else {
-					request.setAttribute("update", "Wrong old email");
-					request.getRequestDispatcher("/manageAccount.jsp").forward(request, response);
+					String emailCheck = "select email from users where email ='"+oldEmail+"'and user_id ="+ userId ;
+					ResultSet rs = LocalDbConnect.executeSelectQuery(emailCheck);
+					try {
+						//if user entered in valid old email
+						if(rs.next()) {
+							
+							String updateEmail = "update users set email ='"+newEmail+"' where user_id ="+ userId; 
+							LocalDbConnect.executeUpdateQuery(updateEmail);
+							request.setAttribute("update", "Email Updated");
+							request.getRequestDispatcher("/manageAccount.jsp").forward(request, response);
+						}else {
+							request.setAttribute("update", "Wrong old email");
+							request.getRequestDispatcher("/manageAccount.jsp").forward(request, response);
+						}
+					}catch(SQLException e) {
+						e.printStackTrace();
+					}
+					
 				}
-			}catch(SQLException e) {
-				e.printStackTrace();
+			}catch(Exception e) {
+				
 			}
+			
+
 		}else if(oldAddress!=null) {
 			String newAddress = request.getParameter("new_address");
 			String addressCheck = "select address from users where address ='"+oldAddress+"'and user_id ="+ userId ;
@@ -124,26 +147,65 @@ public class ManageAccountServlet extends HttpServlet {
 				e.printStackTrace();
 			}
 			//have to change other fields as well. needs more testing
-		}else if(oldCard!=null) {
+		}else if(oldCard!=null&&oldSec!=null) {
 			String newCard = request.getParameter("new_card");
-			String cardCheck = "select C_number from users where C_number ='"+oldCard+"'and user_id ="+ userId ;
+			String newSec = request.getParameter("new_sec");
+			String newAddress = request.getParameter("new_address");
+			String newType = request.getParameter("new_type");
+			String newName = request.getParameter("new_name");
+			String newDate = request.getParameter("new_date");
+			
+			String cardCheck = "select C_number, Sec_Code from credit_cards where "
+					+ "C_number ='"+oldCard+"'and "
+					+ "user_id ="+ userId +" "
+					+ "and Sec_Code='" + oldSec + "'" ;
 			ResultSet rs = LocalDbConnect.executeSelectQuery(cardCheck);
 			try {
 				//if user entered in valid old email
 				if(rs.next()) {
-					String updateCard = "update credit_cards set address ='"+newCard+"' where user_id ="+ userId; 
+					String updateCard = "update credit_cards set C_number ='"+newCard+"',"+
+							"Sec_Code='"+newSec+"' ,"+
+							"Billing_Addr='"+ newAddress +"',"+
+							"Type='"+ newType+"',"+
+							"Name='"+ newName+"',"+
+							"Exp_date='"+newDate+"'"+
+							" where user_id ="+ userId;
+					System.out.println(updateCard);
 					LocalDbConnect.executeUpdateQuery(updateCard);
 					request.setAttribute("update", "Credit Card Updated");
 					request.getRequestDispatcher("/manageAccount.jsp").forward(request, response);
 				}else {
-					request.setAttribute("update", "Wrong old Credit card");
+					request.setAttribute("update", "Invalid Information");
 					request.getRequestDispatcher("/manageAccount.jsp").forward(request, response);
 				}
 			}catch(SQLException e) {
 				e.printStackTrace();
 			}
 			
+		}else if(oldNumber!=null) {
+			String newNum=request.getParameter("new_num");
+			String numberCheck="Select phone_num from users where phone_num ="+oldNumber+ " AND "+ "user_id ='"+userId+"'";
+			ResultSet rs= LocalDbConnect.executeSelectQuery(numberCheck);
+			try {
+				if(rs.next()) {
+					String updateNumber="update users set phone_num = "+newNum+" where user_id= '"+userId+"'";
+					LocalDbConnect.executeUpdateQuery(updateNumber);
+					request.setAttribute("update", "Phone Number updated");
+					request.getRequestDispatcher("/manageAccount.jsp").forward(request, response);
+				}
+				else {
+					request.setAttribute("update", "Invalid Information");
+					request.getRequestDispatcher("/manageAccount.jsp").forward(request, response);
+					
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		
 		}
+		
+		
 		
 		
 		

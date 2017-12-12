@@ -57,7 +57,11 @@ public class HotelSelectServlet extends HttpServlet {
 		 */
 		//Step ONE:
 		System.out.println("Hotel Select doGet method");
+		PrintWriter out = response.getWriter();
 		ObjectMapper mapper = new ObjectMapper();
+		String message = request.getParameter("message");
+		System.out.println("message: " + message);
+		System.out.println("JSON string form of req_rooms: " +request.getParameter("req_rooms"));
 		String[] caps = mapper.readValue(request.getParameter("caps"),String[].class);
 		ArrayList<String> requestedRooms = mapper.readValue(request.getParameter("req_rooms"),
 				TypeFactory.defaultInstance().constructCollectionType(List.class, String.class)); //list of room_no already requested
@@ -71,10 +75,29 @@ public class HotelSelectServlet extends HttpServlet {
 			System.out.print(s + " ");
 		}
 		System.out.println();
+		for(String s : requestedRooms){
+			System.out.print(s + " ");
+		}
+		System.out.println();
 		System.out.println(requestedRooms.size() + " " + roomNum);
 		System.out.println("in-date: " + inDate + " out-date: " + outDate);
-		//check if user is on the last room
-		if(requestedRooms.size() == roomNum){
+		//message will only not be null if user has selected at least
+		//one room in the room selection process
+		if(message != null && message.equals("room selection phase")){
+			//check if user is on the last room
+			String reqRoomsString = mapper.writeValueAsString(requestedRooms);
+			if(requestedRooms.size() == caps.length){
+				System.out.println("Last room has been selected");
+				String url = "/HotelReservations/ReservedRoomSummary?hotel_id="+id+"&name="+name+"&in_date="+inDate
+						+"&out_date="+outDate+"&req_rooms="+reqRoomsString;
+				out.println(url);
+			}
+			else{
+				String capsString = mapper.writeValueAsString(caps);
+				String url = "/HotelReservations/HotelSelect?hotel_id="+id+"&name="+name+"&in_date="+inDate
+						+"&out_date="+outDate+"&caps="+capsString+"&room_num="+roomNum+"&req_rooms="+reqRoomsString;
+				out.println(url);
+			}
 			
 		}
 		else{
@@ -102,8 +125,14 @@ public class HotelSelectServlet extends HttpServlet {
 			}catch(Exception e){
 				e.printStackTrace();
 			}
+			request.setAttribute("caps", caps);
+			request.setAttribute("in_date", inDate);
+			request.setAttribute("out_date", outDate);
 			request.setAttribute("hotel_name", name);
+			request.setAttribute("hotel_id", id);
+			request.setAttribute("room_num", roomNum);
 			request.setAttribute("rooms", availableRooms);
+			request.setAttribute("req_rooms", requestedRooms);
 			request.getRequestDispatcher("/selectRoom.jsp").forward(request, response);
 		}
 	}
