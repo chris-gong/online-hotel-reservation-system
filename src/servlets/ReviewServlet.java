@@ -64,6 +64,10 @@ public class ReviewServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 		
+		for (int i =0 ; i < invoice.size(); i++) {
+			System.out.println(invoice.get(i));
+		}
+		
 		request.setAttribute("invoice", invoice);
 		request.setAttribute("resDate", resDate);
 		request.setAttribute("cnum", cnum);
