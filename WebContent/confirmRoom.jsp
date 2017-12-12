@@ -20,6 +20,7 @@
 <body>
 	<form method="post" action="ReservedRoomSummary">
 		<input type="hidden" name="hotel_id" value="${hotel_id}">
+		<input type="hidden" name="hotel_name" value="${hotel_name}">
 		<input type="hidden" name="in_date" value="${in_date}">
 		<input type="hidden" name="out_date" value="${out_date}">
 		<input type="hidden" name="req_room_string" value='${req_room_string}'>

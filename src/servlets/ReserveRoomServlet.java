@@ -41,6 +41,7 @@ public class ReserveRoomServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println("Entering reserveroomsummary doGet");
 		HttpSession session = request.getSession(true);
 		String user_id = (String) session.getAttribute("user_id");
 		int id = Integer.parseInt(request.getParameter("hotel_id"));
@@ -119,6 +120,7 @@ public class ReserveRoomServlet extends HttpServlet {
 		ObjectMapper mapper = new ObjectMapper();
 		HttpSession session = request.getSession();
 		String id = request.getParameter("hotel_id");
+		String name = request.getParameter("hotel_name");
 		String inDate = request.getParameter("in_date");
 		String outDate = request.getParameter("out_date");
 		String reqRoomString = request.getParameter("req_room_string");
@@ -134,48 +136,75 @@ public class ReserveRoomServlet extends HttpServlet {
 		//if the user chooses to make a new credit card
 		if(cardNum.equals("")){
 			System.out.println("New credit card");
+			//check if inputted parameters for the credit card are valid
+			String cardName = request.getParameter("card_name");
+			String cardAddress = request.getParameter("card_addr");
+			cardNum = request.getParameter("card_num");
+			String cardSec = request.getParameter("card_sec");
+			String cardType = request.getParameter("card_type");
+			String cardExpDate = request.getParameter("card_exp_date");
+			//check if expiration date is at least after today
+			Date today = new Date();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			String todayDate = sdf.format(today);
+			try{
+				if(today.after(sdf.parse(cardExpDate))){
+					//tell the user that the card is expired
+					System.out.println("Card is expired");
+					String message = "Card is expired";
+					response.sendRedirect("/HotelReservations/ReservedRoomSummary?hotel_id="+id+"&name="+name+
+							"&in_date="+inDate+"&out_date="+outDate+"&req_rooms="+reqRoomString+"&message="+message);
+					return;
+				}
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+			
+		}
+		
+		//System.out.println("Old credit card");
+		//check if rooms have already been reserved
+		int numConflicts = getConflictingRoomCount(requestedRoomNums, id, inDate, outDate);
+		System.out.println("number of conflicts: " + numConflicts);
+		if(numConflicts == 0){
+			//if there are no conflicting entries in res_details table, 
+			//proceed to make reservations and res_details entries
+			Date today = new Date();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			String todayDate = sdf.format(today);
+			System.out.println(todayDate);
+			String userId = (String) session.getAttribute("user_id");
+			String insertResQry = "insert into reservations (Res_Date,user_id,c_number) values('"+todayDate+"'"
+					+ ",'"+userId+"','"+cardNum+"');";
+			try{
+				ResultSet rs = LocalDbConnect.executeInsertAndRetrieveKeys(insertResQry);
+				if(rs.next()){
+					int invoice = rs.getInt(1); //retrieves the first column of the primary key, which is the invoice_no
+					System.out.println(invoice);
+					//insert entries into res_details
+					try{
+						for(String room: requestedRoomNums){
+							String insertRes ="insert into res_details values('"+inDate+"','"+outDate+"','"+room+"','"+id+"','"+invoice+"')";
+							LocalDbConnect.executeInsertQuery(insertRes);
+						}
+						System.out.println("Redirecting to breakfastservice servlet");
+						response.sendRedirect("/HotelReservations/BreakfastServiceSelect?invoice_no="+invoice+"&in_date="+inDate+"&out_date="
+								+"&hotel_id"+id+"&=req_rooms"+reqRoomString);
+					}catch(Exception e){
+						e.printStackTrace();
+					}
+					
+				}
+			}
+			catch(Exception e){
+				e.printStackTrace();
+			}
 		}
 		else{
-			System.out.println("Old credit card");
-			//check if rooms have already been reserved
-			int numConflicts = getConflictingRoomCount(requestedRoomNums, id, inDate, outDate);
-			System.out.println("number of conflicts: " + numConflicts);
-			if(numConflicts == 0){
-				//if there are no conflicting entries in res_details table, 
-				//proceed to make reservations and res_details entries
-				Date today = new Date();
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-				String todayDate = sdf.format(today);
-				System.out.println(todayDate);
-				String userId = (String) session.getAttribute("user_id");
-				String insertResQry = "insert into reservations (Res_Date,user_id,c_number) values('"+todayDate+"'"
-						+ ",'"+userId+"','"+cardNum+"');";
-				try{
-					ResultSet rs = LocalDbConnect.executeInsertAndRetrieveKeys(insertResQry);
-					if(rs.next()){
-						int invoice = rs.getInt(1); //retrieves the first column of the primary key, which is the invoice_no
-						System.out.println(invoice);
-						//insert entries into res_details
-						try{
-							for(String room: requestedRoomNums){
-								String insertRes ="insert into res_details values('"+inDate+"','"+outDate+"','"+room+"','"+id+"','"+invoice+"')";
-								LocalDbConnect.executeInsertQuery(insertRes);
-							}
-						}catch(Exception e){
-							e.printStackTrace();
-						}
-						
-					}
-				}
-				catch(Exception e){
-					e.printStackTrace();
-				}
-			}
-			else{
-				//if there are conflicting entries in res_details table
-				//don't make any entries in reservations and res_details entries
-			}
+			//if there are conflicting entries in res_details table
+			//don't make any entries in reservations and res_details entries
 		}
+		
 	}
 	public int getConflictingRoomCount(ArrayList<String> rooms, String hotelId, String inDate, String outDate){
 		String checkRoomsQry = "select count(*) as num_conflicts from"
