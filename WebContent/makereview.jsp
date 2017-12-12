@@ -35,11 +35,14 @@ Services:
 
 <br>
 
-<h1>Select which breakfast you want to order for invoice # ${invoiceNum}</h1>
+<h1>Select which breakfast you want to order for invoice # ${invoiceNum} at hotel ${firsthotel} </h1>
 <div id = "test2">
 	<c:forEach items = "${btype}" var = "b">
 		<form method = "get" action = "WriteReviewServlet">
 			<input name = "in2" id = "in2" type = "hidden" value = "${invoiceNum}">
+			<input name = "hotel" id = "hotel" type = "hidden" value = "${firsthotel}">
+			<input name = "ind" id = "ind" type = "hidden" value = "${indate}">
+			<input name = "outd" id = "outd" type = "hidden" value = "${outdate}">
 			<input type = "submit" value = "${b}" name = "breakfast">
 			
 		</form>

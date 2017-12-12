@@ -52,6 +52,25 @@ public class MakeReviewServlet extends HttpServlet {
 				//"select distinct * from breakfast_orders where invoice_no = " + invoiceNum;
 		ResultSet breakfasts = LocalDbConnect.executeSelectQuery(bquery);
 		
+		String datesq = "select in_date ,out_date from res_details where invoice_no=" + invoiceNum;
+		ResultSet dates = LocalDbConnect.executeSelectQuery(datesq);
+		
+		String indate = "", outdate = "";
+		try {
+			dates.next();
+			 indate = dates.getString("in_date");
+			 outdate = dates.getString("out_date");
+
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		//System.out.println("indate: " + indate);
+		//System.out.println("outdate " + outdate);
+		
+
+		
 		ArrayList <String> btype = new ArrayList<String>();
 		ArrayList <String> hotelid = new ArrayList<String>();
 		ArrayList <String> timesordered = new ArrayList<String>();
@@ -78,6 +97,11 @@ public class MakeReviewServlet extends HttpServlet {
 		request.setAttribute("hotelid", hotelid);
 		request.setAttribute("timesordered", timesordered);
 		request.setAttribute("invoiceNum", invoiceNum);
+		request.setAttribute("indate", indate);
+		request.setAttribute("outdate", outdate);
+		String firsthotel = hotelid.get(0);
+		request.setAttribute("firsthotel", firsthotel);
+
 		
 		
 		request.getRequestDispatcher("/makereview.jsp").forward(request,response);
