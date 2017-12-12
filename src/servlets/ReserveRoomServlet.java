@@ -117,6 +117,7 @@ public class ReserveRoomServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		ObjectMapper mapper = new ObjectMapper();
+		HttpSession session = request.getSession();
 		String id = request.getParameter("hotel_id");
 		String inDate = request.getParameter("in_date");
 		String outDate = request.getParameter("out_date");
@@ -142,6 +143,33 @@ public class ReserveRoomServlet extends HttpServlet {
 			if(numConflicts == 0){
 				//if there are no conflicting entries in res_details table, 
 				//proceed to make reservations and res_details entries
+				Date today = new Date();
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				String todayDate = sdf.format(today);
+				System.out.println(todayDate);
+				String userId = (String) session.getAttribute("user_id");
+				String insertResQry = "insert into reservations (Res_Date,user_id,c_number) values('"+todayDate+"'"
+						+ ",'"+userId+"','"+cardNum+"');";
+				try{
+					ResultSet rs = LocalDbConnect.executeInsertAndRetrieveKeys(insertResQry);
+					if(rs.next()){
+						int invoice = rs.getInt(1); //retrieves the first column of the primary key, which is the invoice_no
+						System.out.println(invoice);
+						//insert entries into res_details
+						try{
+							for(String room: requestedRoomNums){
+								String insertRes ="insert into res_details values('"+inDate+"','"+outDate+"','"+room+"','"+id+"','"+invoice+"')";
+								LocalDbConnect.executeInsertQuery(insertRes);
+							}
+						}catch(Exception e){
+							e.printStackTrace();
+						}
+						
+					}
+				}
+				catch(Exception e){
+					e.printStackTrace();
+				}
 			}
 			else{
 				//if there are conflicting entries in res_details table

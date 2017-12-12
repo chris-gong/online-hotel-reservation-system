@@ -7,6 +7,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
 import java.util.ArrayList;
+
+import com.mysql.jdbc.PreparedStatement;
+
 import java.sql.CallableStatement;
 
 public class LocalDbConnect {
@@ -117,6 +120,26 @@ public class LocalDbConnect {
 				return null;
 			}
 
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	public static ResultSet executeInsertAndRetrieveKeys(String query){
+		Connection conn = null;
+		//PreparedStatement stmt = null;
+		try {
+			// STEP 2: Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
+
+			// STEP 3: Open a connection
+			System.out.println("Connecting to database...");
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+			PreparedStatement stmt = (PreparedStatement) conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+			
+			//STEP 4: Execute query
+			int updated = stmt.executeUpdate(); //returns 0 or 1 depending on success
+			return stmt.getGeneratedKeys(); //returns a result set of keys of the entries just inserted
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
