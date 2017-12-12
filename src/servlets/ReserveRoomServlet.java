@@ -83,7 +83,10 @@ public class ReserveRoomServlet extends HttpServlet {
 		for(Room room : requestedRooms){
 			System.out.println(room.getRoomNum());
 		}
+		String reqRoomString = mapper.writeValueAsString(requestedRoomNums); //JSON String form of arraylist requestedRooms
+		System.out.println("JSON String form of req_rooms arraylist " + reqRoomString);
 		request.setAttribute("req_rooms", requestedRooms);
+		request.setAttribute("req_room_string", reqRoomString);
 		String retrieveCardsQry = "select * from credit_cards where user_id='" + user_id + "'";
 		System.out.println(retrieveCardsQry);
 		Date today = new Date();
@@ -113,8 +116,63 @@ public class ReserveRoomServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		ObjectMapper mapper = new ObjectMapper();
 		String id = request.getParameter("hotel_id");
+		String inDate = request.getParameter("in_date");
+		String outDate = request.getParameter("out_date");
+		String reqRoomString = request.getParameter("req_room_string");
+		String cardNum = request.getParameter("credit_card");
+		
+		System.out.println(reqRoomString);
+		ArrayList<String> requestedRoomNums = mapper.readValue(reqRoomString,
+				TypeFactory.defaultInstance().constructCollectionType(List.class, String.class)); 
 		System.out.println(id);
+		for(String room : requestedRoomNums){
+			System.out.println(room);
+		}
+		//if the user chooses to make a new credit card
+		if(cardNum.equals("")){
+			System.out.println("New credit card");
+		}
+		else{
+			System.out.println("Old credit card");
+			//check if rooms have already been reserved
+			int numConflicts = getConflictingRoomCount(requestedRoomNums, id, inDate, outDate);
+			System.out.println("number of conflicts: " + numConflicts);
+			if(numConflicts == 0){
+				//if there are no conflicting entries in res_details table, 
+				//proceed to make reservations and res_details entries
+			}
+			else{
+				//if there are conflicting entries in res_details table
+				//don't make any entries in reservations and res_details entries
+			}
+		}
 	}
-
+	public int getConflictingRoomCount(ArrayList<String> rooms, String hotelId, String inDate, String outDate){
+		String checkRoomsQry = "select count(*) as num_conflicts from"
+				+ " ((select distinct room_no, hotel_id from res_details"
+				+ " where ((in_date <= '"+outDate+"') and (out_date >= '"+inDate+"')) and hotel_id = '"+hotelId+"')t1"
+				+ " inner join "
+				+ "(";
+		for(String roomNum : rooms){
+			checkRoomsQry += "select '"+roomNum+"' as 'room_no', '"+hotelId+"' as 'hotel_id' union";
+		}
+		checkRoomsQry = checkRoomsQry.substring(0, checkRoomsQry.lastIndexOf("union"));
+		checkRoomsQry += ") t2 on (t1.room_no = t2.room_no and t1.hotel_id = t2.hotel_id));";
+		System.out.println(checkRoomsQry);
+		try{
+			ResultSet rs = LocalDbConnect.executeSelectQuery(checkRoomsQry);
+			if(rs.next()){
+				int numConflicts = rs.getInt("num_conflicts");
+				return numConflicts;
+			}
+			else{
+				return -1;
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return 0;
+	}
 }

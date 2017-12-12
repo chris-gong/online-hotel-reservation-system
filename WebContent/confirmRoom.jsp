@@ -22,7 +22,7 @@
 		<input type="hidden" name="hotel_id" value="${hotel_id}">
 		<input type="hidden" name="in_date" value="${in_date}">
 		<input type="hidden" name="out_date" value="${out_date}">
-		<input type="hidden" name="req_rooms" value="${req_rooms}">
+		<input type="hidden" name="req_room_string" value='${req_room_string}'>
 		<div id="req_rooms" class="container-fluid">
 		Please look over the rooms you have selected and proceed to purchase <br>
 			Displaying selected rooms for ${hotel_name} <br>
