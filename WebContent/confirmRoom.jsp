@@ -77,6 +77,11 @@
 				$("#credit_cards").append('<div id="card_form">Name: <input type="text" name="card_name" required> <br>Billing Address: <input type="text" name="card_addr" required> <br>Card Number: <input type="text" name="card_num" minlength="16" required> <br>Security Code: <input type="text" name="card_sec" required> <br>Card Type: <input type="text" name="card_type" required> <br> Expiration Date: <input type="Date" name="card_exp_date" required> <br></div>');
 			}
 		});
+		//makes it so that back forward cache is disabled
+		$(window).bind("pageshow", function() {
+		    var form = $('form'); 
+		    form[0].reset();
+		});
 	});
 </script>
 </html>

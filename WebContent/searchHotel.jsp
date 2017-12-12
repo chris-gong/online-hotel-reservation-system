@@ -71,7 +71,7 @@
 
 <body>
 
-	<form method="post" action="HotelLookup">
+	<form method="post" action="HotelLookup" autocomplete="off">
 		<div id="countrylist">
 			<label>Country:</label> <select size="1" id="countries" title="" name="country" required>
 				<option value="">Choose a country</option>
