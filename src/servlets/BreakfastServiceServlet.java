@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import server.LocalDbConnect;
 import entities.Breakfast;
+import entities.Service;
 /**
  * Servlet implementation class BreakfastServiceServlet
  */
@@ -33,6 +34,7 @@ public class BreakfastServiceServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String hotelId = request.getParameter("hotel_id");
 		ArrayList<Breakfast> breakfasts = new ArrayList<Breakfast>();
+		ArrayList<Service> services = new ArrayList<Service>();
 		//retrieve breakfasts associated with the hotel id
 		String breakfastQry = "Select * from breakfast_offers where hotel_id='"+hotelId+"';";
 		System.out.println(breakfastQry);
@@ -54,6 +56,21 @@ public class BreakfastServiceServlet extends HttpServlet {
 		request.setAttribute("breakfasts", breakfasts);
 		//retrieve services associated with the hotel id
 		String serviceQry = "Select * from service_offers where hotel_id='"+hotelId+"';";
+		try{
+			ResultSet serviceRs = LocalDbConnect.executeSelectQuery(serviceQry);
+			while(serviceRs.next()){
+				String type = serviceRs.getString("s_type");
+				int price = serviceRs.getInt("s_cost");
+				Service service = new Service(type, price);
+				services.add(service);
+			}
+		}catch(Exception e){
+			
+		}
+		request.setAttribute("services", services);
+		for(Service s : services){
+			System.out.println(s.getType());
+		}
 		request.getRequestDispatcher("/breakfastServiceOrder.jsp").forward(request, response);
 	}
 

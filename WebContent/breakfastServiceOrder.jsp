@@ -19,11 +19,16 @@
 				<c:forEach items="${breakfasts}" var = "breakfast">
 					<input type="radio" name="breakfast_type" value="${breakfast.getType()}"> ${breakfast.getDescription()} for $${breakfast.getPrice()}<br>
 				</c:forEach>
-				<button type = "button">Add breakfast</button>
+					<button type = "button">Add breakfast</button>
+					<button type = "button">Remove breakfast</button>
 			</div>
 			<div id="service_list" class="col-6">
 				Available services <br>
+				<c:forEach items="${services}" var = "service">
+					<input type="radio" name="service_type" value="${service.getType()}"> ${service.getType()} for $${service.getPrice()}<br>
+				</c:forEach>
 				<button type = "button">Add service</button>
+				<button type = "button">Remove service</button>
 			</div>
 		</div>
 	</div>
