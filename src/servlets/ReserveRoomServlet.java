@@ -240,6 +240,10 @@ public class ReserveRoomServlet extends HttpServlet {
 			//if there are conflicting entries in res_details table
 			//don't make any entries in reservations and res_details entries
 			//and tell the user that the rooms can not be reserved
+			
+			String message = "This room has already been reserved.";
+			response.sendRedirect("/HotelReservations/ReservedRoomSummary?hotel_id="+id+"&name="+name+
+					"&in_date="+inDate+"&out_date="+outDate+"&req_rooms="+reqRoomString+"&dupl_message="+message);
 		}
 		
 	}
