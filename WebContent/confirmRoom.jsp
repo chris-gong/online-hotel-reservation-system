@@ -46,6 +46,7 @@
 				<br>
 			</c:forEach>
 		</div>
+		The total cost of your stay from ${in_date} to ${out_date} will come out to be $${cost}
 		<div id="credit_cards">
 		Select a credit card:
 		<select name="credit_card" id="card_choice">

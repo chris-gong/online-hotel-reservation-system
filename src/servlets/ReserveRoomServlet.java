@@ -3,6 +3,7 @@ package servlets;
 
 import java.io.IOException;
 import java.sql.ResultSet;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -110,6 +111,8 @@ public class ReserveRoomServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 		request.setAttribute("cards", creditCards);
+		double cost = calculateTotalCost(requestedRoomNums,id, inDate, outDate);
+		request.setAttribute("cost", cost);
 		request.getRequestDispatcher("/confirmRoom.jsp").forward(request,response);
 	}
 
@@ -261,7 +264,41 @@ public class ReserveRoomServlet extends HttpServlet {
 		}
 		return 0;
 	}
-	public double calculateTotalCost(ArrayList<Integer> costs, String inDate, String outDate){
-		return 0;
+	public double calculateTotalCost(ArrayList<String> roomNums, int hotelId, String inDate, String outDate){
+		ArrayList<Integer> prices = new ArrayList<Integer>();
+		//retrieve each room's cost
+		for(String num : roomNums){
+			String getCostQry = "select price from rooms where room_no = '"+num+"' and hotel_id ='"+hotelId+"';";
+			try{
+				ResultSet cost = LocalDbConnect.executeSelectQuery(getCostQry);
+				if(cost.next()){
+					prices.add(cost.getInt("price"));
+				}
+			}
+			catch(Exception e){
+				e.printStackTrace();
+			}
+		}
+		//get the number of days between the indate and outdate
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		int days = 0;
+		try {
+			Date in = sdf.parse(inDate);
+			Date out = sdf.parse(outDate);
+			days = daysBetween(in, out);
+			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		int total = 0;
+		for(Integer price : prices){
+			total += days * price;
+		}
+		System.out.println(total);
+		return total;
 	}
+	public int daysBetween(Date d1, Date d2){
+        return (int)( (d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24));
+}
 }
