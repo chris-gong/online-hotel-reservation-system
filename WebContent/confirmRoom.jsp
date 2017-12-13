@@ -83,6 +83,12 @@
 			<br>
 		</div>
 		<input type="submit">
+		<%
+			String unavailMessage = (String) request.getParameter("unavail_message");
+			if(unavailMessage != null){
+				out.println(unavailMessage);
+			}
+		%>
 	</form>
 </body>
 <script>

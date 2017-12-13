@@ -225,7 +225,7 @@ public class ReserveRoomServlet extends HttpServlet {
 						}
 						System.out.println("Redirecting to breakfastservice servlet");
 						response.sendRedirect("/HotelReservations/BreakfastServiceSelect?invoice_no="+invoice+"&in_date="+inDate+"&out_date="
-								+outDate+"&hotel_id="+id+"&req_rooms="+reqRoomString+"&card_num="+cardNum);
+								+outDate+"&hotel_id="+id+"&req_rooms="+reqRoomString);
 					}catch(Exception e){
 						e.printStackTrace();
 					}
@@ -243,7 +243,7 @@ public class ReserveRoomServlet extends HttpServlet {
 			
 			String message = "This room has already been reserved.";
 			response.sendRedirect("/HotelReservations/ReservedRoomSummary?hotel_id="+id+"&name="+name+
-					"&in_date="+inDate+"&out_date="+outDate+"&req_rooms="+reqRoomString+"&dupl_message="+message);
+					"&in_date="+inDate+"&out_date="+outDate+"&req_rooms="+reqRoomString+"&unavail_message="+message);
 		}
 		
 	}
