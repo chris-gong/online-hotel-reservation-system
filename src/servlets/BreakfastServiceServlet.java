@@ -46,15 +46,22 @@ public class BreakfastServiceServlet extends HttpServlet {
 		String hotelId = request.getParameter("hotel_id");
 		String inDate = request.getParameter("in_date");
 		String outDate = request.getParameter("out_date");
+		String invoiceNum = request.getParameter("invoice_no");
+		String reqRoomString = request.getParameter("req_rooms");
 		ArrayList<Breakfast> breakfasts = new ArrayList<Breakfast>();
 		ArrayList<Service> services = new ArrayList<Service>();
-		ArrayList<String> requestedRoomNums = mapper.readValue(request.getParameter("req_rooms"),
+		ArrayList<String> requestedRoomNums = mapper.readValue(reqRoomString,
 				TypeFactory.defaultInstance().constructCollectionType(List.class, String.class)); 
 		//retrieve breakfasts associated with the hotel id
 		String breakfastQry = "Select * from breakfast_offers where hotel_id='"+hotelId+"';";
 		int totalCap = 0;
 		int orderLimit = 0;
 		System.out.println(breakfastQry);
+		request.setAttribute("in_date",inDate);
+		request.setAttribute("out_date", outDate);
+		request.setAttribute("invoice_no", invoiceNum);
+		request.setAttribute("req_room_string", reqRoomString);
+		request.setAttribute("hotel_id", hotelId);
 		try{
 			ResultSet breakfastRs = LocalDbConnect.executeSelectQuery(breakfastQry);
 			while(breakfastRs.next()){
@@ -127,16 +134,62 @@ public class BreakfastServiceServlet extends HttpServlet {
 		ObjectMapper mapper = new ObjectMapper();
 		String breakfastString = request.getParameter("breakfast_array_string");
 		String serviceString = request.getParameter("service_array_string");
-		String outerLimit = request.getParameter("outer_limit");
+		String orderLimit = request.getParameter("order_limit");
+		String invoice = request.getParameter("invoice_no");
+		String inDate = request.getParameter("in_date");
+		String outDate = request.getParameter("out_date");
+		String reqRoomString = request.getParameter("req_room_string");
+		String hotelId = request.getParameter("hotel_id");
+		int maxCap = Integer.parseInt(orderLimit);
 		System.out.println("breakfast service servlet doPost");
 		System.out.println(breakfastString + " " + serviceString);
+		int totalBreakfastCount = 0;
+		int totalServiceCount = 0;
 		//arraylist of json strings which in themselves represent
 		//arrays containing two things, type and quantity
 		ArrayList<String> breakfasts = mapper.readValue(breakfastString,
 				TypeFactory.defaultInstance().constructCollectionType(List.class, String.class)); 
 		ArrayList<String> services = mapper.readValue(serviceString,
-				TypeFactory.defaultInstance().constructCollectionType(List.class, String.class)); 
-		//TODO: make sure to filter out underscores in breakfast or service types
+				TypeFactory.defaultInstance().constructCollectionType(List.class, String.class));
+		ArrayList<Breakfast> breakfastReqs = new ArrayList<Breakfast>();
+		ArrayList<Service> serviceReqs = new ArrayList<Service>();
+		//retrieve the requested services and breakfasts from the user
+		for(String b : breakfasts){
+			ArrayList<String> breakfastObj = mapper.readValue(b,
+					TypeFactory.defaultInstance().constructCollectionType(List.class, String.class)); 
+			//filter out underscores in breakfast or service types
+			String bType = breakfastObj.get(0).replaceAll("_", " ");
+			Breakfast breakfast = new Breakfast(bType, Integer.parseInt(breakfastObj.get(2)), null);
+			breakfast.setTimesOrdered(Integer.parseInt(breakfastObj.get(1)));
+			breakfastReqs.add(breakfast);
+		}
+		for(String s : services){
+			ArrayList<String> serviceObj = mapper.readValue(s,
+					TypeFactory.defaultInstance().constructCollectionType(List.class, String.class)); 
+			//filter out underscores in breakfast or service types
+			String sType = serviceObj.get(0).replaceAll("_", " ");
+			Service service = new Service(sType, Integer.parseInt(serviceObj.get(2)));
+			service.setTimesOrdered(Integer.parseInt(serviceObj.get(1)));
+			serviceReqs.add(service);
+		}
+		for(Breakfast b : breakfastReqs){
+			totalBreakfastCount += b.getTimesOrdered();
+		}
+		for(Service s : serviceReqs){
+			totalServiceCount += s.getTimesOrdered();
+		}
+		System.out.println("breakfastcount: " + totalBreakfastCount);
+		System.out.println("servicecount: " + totalServiceCount);
+		if(totalBreakfastCount > maxCap || totalServiceCount > maxCap){
+			//user ordered too many breakfasts or services
+			System.out.println("Ordered too many breakfasts or services");
+			String message = "Number of orders is greater than the amount allowed for this reservation";
+			response.sendRedirect("/HotelReservations/BreakfastServiceSelect?invoice_no="+invoice+"&in_date="+inDate+"&out_date="
+					+outDate+"&hotel_id="+hotelId+"&req_rooms="+reqRoomString+"&err_message="+message);
+		}
+		else{
+			//take the user to a review summary page for the breakfasts and services he/she ordered
+		}
 	}
 	public int daysBetween(LocalDate d1, LocalDate d2){
         return (int) ChronoUnit.DAYS.between(d1,d2);

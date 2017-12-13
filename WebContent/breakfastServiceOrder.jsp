@@ -13,12 +13,25 @@
 <body>
 <form method="post" action="BreakfastServiceSelect" onSubmit="return collectOrders();">
 	<input type="text" name="order_limit" value="${order_limit}" hidden>
+	<input type="text" name="invoice_no" value="${invoice_no}" hidden>
+	<input type="text" name="in_date" value="${in_date}" hidden>
+	<input type="text" name="out_date" value="${out_date}" hidden>
+	<input type="text" name="req_room_string" value='${req_room_string}' hidden>
+	<input type="text" name="hotel_id" value="${hotel_id}" hidden>
 	<div class="container-fluid">
+		<%
+			String message = (String) request.getParameter("err_message");
+			if(message != null){
+				out.println("<span style='color: #a94442;'>"+message+"</span><br>");
+			}
+		%>
+		Note that you are only allowed to order at most 1 breakfast and service for each day of your stay (${in_date} to ${out_date}) for each person <br>
+		The max allowed number of orders that can be made for each the breakfasts and services is ${order_limit}
 		<div class="row">
 			<div id="breakfast_list" class="col-6">
 				Available breakfasts <br>
 				<c:forEach items="${breakfasts}" var = "breakfast">
-					<input type="radio" name="breakfast_type" value="${breakfast.getType()}"> ${breakfast.getDescription()} for $${breakfast.getPrice()}<br>
+					<input type="radio" name="breakfast_type" value="${breakfast.getType()}" data-price="${breakfast.getPrice()}"> ${breakfast.getDescription()} for $${breakfast.getPrice()}<br>
 				</c:forEach>
 					<button type = "button" id="add_breakfast">Add breakfast</button>
 					<button type = "button" id="remove_breakfast">Remove breakfast</button>
@@ -26,7 +39,7 @@
 			<div id="service_list" class="col-6">
 				Available services <br>
 				<c:forEach items="${services}" var = "service">
-					<input type="radio" name="service_type" value="${service.getType()}"> ${service.getType()} for $${service.getPrice()}<br>
+					<input type="radio" name="service_type" value="${service.getType()}" data-price="${service.getPrice()}"> ${service.getType()} for $${service.getPrice()}<br>
 				</c:forEach>
 				<button type = "button" id="add_service">Add service</button>
 				<button type = "button" id="remove_service">Remove service</button>
@@ -55,21 +68,25 @@
 		var breakfast_array = new Array();
 		$("#breakfast_requests > div").each(function(){
 			var b_type = $(this).data('btype');
+			var price = $(this).data('price');
 			console.log(b_type);
 			var quant = $(this).children("span").html();
 			var breakfast_obj = new Array();
 			breakfast_obj.push(b_type);
 			breakfast_obj.push(quant);
+			breakfast_obj.push(price);
 			breakfast_array.push(JSON.stringify(breakfast_obj));
 		});
 		var service_array = new Array();
 		$("#service_requests > div").each(function(){
 			var s_type = $(this).data('stype');
+			var price = $(this).data('price');
 			console.log(s_type);
 			var quant = $(this).children("span").html();
 			var service_obj = new Array();
 			service_obj.push(s_type);
 			service_obj.push(quant);
+			service_obj.push(price);
 			service_array.push(JSON.stringify(service_obj));
 		});
 		var breakfast_array_string = JSON.stringify(breakfast_array);
@@ -96,23 +113,24 @@
 					$("#"+b_type+"div").children("span").html(count+1);
 				}
 				else{
+					var price = $("input[name='breakfast_type']:checked").data('price');
 					//if the user did not request the breakfast type yet
-					$("#breakfast_requests").append('<div id='+b_type+'div data-btype="'+b_type_with_scores+'">'+b_type_with_spaces+', Quantity: <span>1</span></div>');
+					$("#breakfast_requests").append('<div id='+b_type+'div data-btype="'+b_type_with_scores+'" data-price="'+price+'">'+b_type_with_spaces+', Quantity: <span>1</span></div>');
 				}
 			}
 		});
 		$("#remove_breakfast").click(function(){
 			var b_type = $("input[name='breakfast_type']:checked").val();
-			b_type = b_type.replace(/ /g,'_');
+			var b_type_with_scores = b_type.replace(/ /g,'_');
 			if(b_type != null){
-				if($("#"+b_type+"div").length){
+				if($("#"+b_type_with_scores+"div").length){
 					//if the user already requested that breakfast type once
-					var count = parseInt($("#"+b_type+"div").children("span").html());
+					var count = parseInt($("#"+b_type_with_scores+"div").children("span").html());
 					if(count == 1){
-						$("#"+b_type+"div").remove();
+						$("#"+b_type_with_scores+"div").remove();
 					}
 					else{
-						$("#"+b_type+"div").children("span").html(count-1);
+						$("#"+b_type_with_scores+"div").children("span").html(count-1);
 					}
 
 				}
@@ -135,23 +153,24 @@
 					$("#"+s_type+"div").children("span").html(count+1);
 				}
 				else{
+					var price = $("input[name='service_type']:checked").data('price');
 					//if the user did not request the service type yet
-					$("#service_requests").append('<div id='+s_type+'div data-stype="'+s_type_with_scores+'">'+s_type_with_spaces+', Quantity: <span>1</span></div>');
+					$("#service_requests").append('<div id='+s_type+'div data-stype="'+s_type_with_scores+'" data-price="'+price+'">'+s_type_with_spaces+', Quantity: <span>1</span></div>');
 				}
 			}
 		});
 		$("#remove_service").click(function(){
 			var s_type = $("input[name='service_type']:checked").val();
-			s_type = s_type.replace(/ /g,'');
+			var s_type_with_scores = s_type.replace(/ /g,'_');
 			if(s_type != null){
-				if($("#"+s_type+"div").length){
+				if($("#"+s_type_with_scores+"div").length){
 					//if the user already requested that breakfast type once
-					var count = parseInt($("#"+s_type+"div").children("span").html());
+					var count = parseInt($("#"+s_type_with_scores+"div").children("span").html());
 					if(count == 1){
-						$("#"+s_type+"div").remove();
+						$("#"+s_type_with_scores+"div").remove();
 					}
 					else{
-						$("#"+s_type+"div").children("span").html(count-1);
+						$("#"+s_type_with_scores+"div").children("span").html(count-1);
 					}
 
 				}
