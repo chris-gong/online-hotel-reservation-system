@@ -143,6 +143,7 @@ public class HotelLookupServlet extends HttpServlet {
 				Hotel h = new Hotel(Integer.parseInt(id),name);
 				hotels.add(h);
 				while (rs.next()) {
+					id = rs.getString("hotel_id");
 					name =rs.getString("name");
 					h = new Hotel(Integer.parseInt(id),name);
 					hotels.add(h);

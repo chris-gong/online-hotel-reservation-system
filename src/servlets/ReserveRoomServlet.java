@@ -217,7 +217,7 @@ public class ReserveRoomServlet extends HttpServlet {
 						}
 						System.out.println("Redirecting to breakfastservice servlet");
 						response.sendRedirect("/HotelReservations/BreakfastServiceSelect?invoice_no="+invoice+"&in_date="+inDate+"&out_date="
-								+"&hotel_id"+id+"&=req_rooms"+reqRoomString);
+								+"&hotel_id"+id+"&=req_rooms"+reqRoomString+"&card_num="+cardNum);
 					}catch(Exception e){
 						e.printStackTrace();
 					}
@@ -259,6 +259,9 @@ public class ReserveRoomServlet extends HttpServlet {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
+		return 0;
+	}
+	public double calculateTotalCost(ArrayList<Integer> costs, String inDate, String outDate){
 		return 0;
 	}
 }
