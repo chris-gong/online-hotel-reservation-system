@@ -161,7 +161,7 @@ public class ManageAccountServlet extends HttpServlet {
 					+ "and Sec_Code='" + oldSec + "'" ;
 			ResultSet rs = LocalDbConnect.executeSelectQuery(cardCheck);
 			try {
-				//if user entered in valid old email
+				
 				if(rs.next()) {
 					String updateCard = "update credit_cards set C_number ='"+newCard+"',"+
 							"Sec_Code='"+newSec+"' ,"+
@@ -184,24 +184,37 @@ public class ManageAccountServlet extends HttpServlet {
 			
 		}else if(oldNumber!=null) {
 			String newNum=request.getParameter("new_num");
-			String numberCheck="Select phone_num from users where phone_num ="+oldNumber+ " AND "+ "user_id ='"+userId+"'";
-			ResultSet rs= LocalDbConnect.executeSelectQuery(numberCheck);
+			String dupNum ="Select phone_num from users where phone_num ="+newNum+"";
+			ResultSet rs2 = LocalDbConnect.executeSelectQuery(dupNum);
 			try {
-				if(rs.next()) {
-					String updateNumber="update users set phone_num = "+newNum+" where user_id= '"+userId+"'";
-					LocalDbConnect.executeUpdateQuery(updateNumber);
-					request.setAttribute("update", "Phone Number updated");
+				if(rs2.next()) {
+					request.setAttribute("update", "This Number already exists");
 					request.getRequestDispatcher("/manageAccount.jsp").forward(request, response);
+				}else {
+					String numberCheck="Select phone_num from users where phone_num ="+oldNumber+ " AND "+ "user_id ='"+userId+"'";
+					ResultSet rs= LocalDbConnect.executeSelectQuery(numberCheck);
+					try {
+						if(rs.next()) {
+							String updateNumber="update users set phone_num = "+newNum+" where user_id= '"+userId+"'";
+							LocalDbConnect.executeUpdateQuery(updateNumber);
+							request.setAttribute("update", "Phone Number updated");
+							request.getRequestDispatcher("/manageAccount.jsp").forward(request, response);
+						}
+						else {
+							request.setAttribute("update", "Invalid Information");
+							request.getRequestDispatcher("/manageAccount.jsp").forward(request, response);
+							
+						}
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
-				else {
-					request.setAttribute("update", "Invalid Information");
-					request.getRequestDispatcher("/manageAccount.jsp").forward(request, response);
-					
-				}
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
+			}catch(Exception e) {
 				e.printStackTrace();
 			}
+			
+			
 		
 		}
 		
