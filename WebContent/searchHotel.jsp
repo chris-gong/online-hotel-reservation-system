@@ -11,6 +11,7 @@
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
+<style > <jsp:include page = "navBarStyle.jsp"/> </style>
 </head>
 <script>
 
@@ -68,9 +69,9 @@
 <%-- User selects options for kind of hotel they want to reserve --%>
 
 
-
 <body>
-
+	
+	<jsp:include page="navbar.jsp"/>
 	<form method="post" action="HotelLookup" autocomplete="off">
 		<div id="countrylist">
 			<label>Country:</label> <select size="1" id="countries" title="" name="country" required>
@@ -113,6 +114,7 @@
 		<input type="submit">
 	</form>
 </body>
+
 <script>
 	function generateStatesHtml(country) {
 		$.ajax({
@@ -193,8 +195,8 @@
 	});
 	
 	
-	document.getElementById("inDate").onchange = function(){checkDate()};
-	document.getElementById("outDate").onchange = function(){checkDate()};
+	document.getElementById("inDate").onchange = function(){checkDate();};
+	document.getElementById("outDate").onchange = function(){checkDate();};
 	function checkDate(){
 		
 		var indate = document.getElementById("indate").value;
@@ -213,4 +215,13 @@
 		}
 	}
 </script>
+<script>
+	document.getElementById("logout_btn").onclick = function() {
+	    document.getElementById("logout_form").submit();
+	}
+	document.getElementById("home_btn").onclick = function() {
+	    document.getElementById("home_form").submit();
+	}
+</script>
+
 </html>

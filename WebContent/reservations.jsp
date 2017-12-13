@@ -8,8 +8,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Here are your reservations:</title>
+<style > <jsp:include page = "navBarStyle.jsp"/> </style>
+
 </head>
 <body>
+<jsp:include page="navbar.jsp"/>
+
 Select which reservation you want to review:
 <br>
 
@@ -66,6 +70,13 @@ Select which reservation you want to review:
 	<button type = "submit">Make review!</button>
 </form>
 
-
 </body>
+<script>
+	document.getElementById("logout_btn").onclick = function() {
+	    document.getElementById("logout_form").submit();
+	}
+	document.getElementById("home_btn").onclick = function() {
+	    document.getElementById("home_form").submit();
+	}
+</script>
 </html>

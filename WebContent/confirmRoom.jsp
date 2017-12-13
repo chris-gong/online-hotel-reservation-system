@@ -16,8 +16,12 @@
 	border-radius:25px;
 }
 </style>
+<style > <jsp:include page = "navBarStyle.jsp"/> </style>
+
 </head>
 <body>
+<jsp:include page="navbar.jsp"/>
+
 	<form method="post" action="ReservedRoomSummary">
 		<input type="hidden" name="hotel_id" value="${hotel_id}">
 		<input type="hidden" name="hotel_name" value="${hotel_name}">
@@ -108,5 +112,13 @@
 		    form[0].reset();
 		});
 	});
+</script>
+<script>
+	document.getElementById("logout_btn").onclick = function() {
+	    document.getElementById("logout_form").submit();
+	}
+	document.getElementById("home_btn").onclick = function() {
+	    document.getElementById("home_form").submit();
+	}
 </script>
 </html>

@@ -17,8 +17,11 @@
 	border-radius:25px;
 }
 </style>
+<style > <jsp:include page = "navBarStyle.jsp"/> </style>
+
 </head>
 <body>
+<jsp:include page="navbar.jsp"/>
 	<div id="caps" hidden>
 		<c:forEach items="${caps}" var="cap">
 			<div class="cap">${cap}</div>
@@ -105,5 +108,13 @@ $(document).ready(function() {
 	});
 });
 
+</script>
+<script>
+	document.getElementById("logout_btn").onclick = function() {
+	    document.getElementById("logout_form").submit();
+	}
+	document.getElementById("home_btn").onclick = function() {
+	    document.getElementById("home_form").submit();
+	}
 </script>
 </html>

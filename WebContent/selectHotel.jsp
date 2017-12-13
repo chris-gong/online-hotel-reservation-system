@@ -8,8 +8,11 @@
 <title>Select Hotel</title>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<style > <jsp:include page = "navBarStyle.jsp"/> </style>
+
 </head>
 <body>
+<jsp:include page="navbar.jsp"/>
 	<div id="caps" hidden>
 		<c:forEach items="${caps}" var="cap">
 			<div class="cap">${cap}</div>
@@ -85,5 +88,13 @@
 			//window.location.href = '/HotelReservations/index.jsp';
 		});
 	});
+</script>
+<script>
+	document.getElementById("logout_btn").onclick = function() {
+	    document.getElementById("logout_form").submit();
+	}
+	document.getElementById("home_btn").onclick = function() {
+	    document.getElementById("home_form").submit();
+	}
 </script>
 </html>

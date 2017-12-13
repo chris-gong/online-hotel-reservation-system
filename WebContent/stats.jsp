@@ -10,16 +10,18 @@
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Stats Page</title>
+<style > <jsp:include page = "navBarStyle.jsp"/> </style>
+
 </head>
 <body>
-
-
-	<div id="first">
-		<form id="firstquery" method="post" action="StatsServlet">
-			<input type="submit">
+<ul>
+	<li>
+		<form id="logout_form" method="post" action="Logout">
+			<a id="logout_btn" href="javascript:void(0)">Logout</a>
 		</form>
+	</li>
+	</ul>
 
-	</div>
 	<br>
 
 	<div id="firstquery">
@@ -137,4 +139,12 @@
 
 
 </body>
+<script>
+	document.getElementById("logout_btn").onclick = function() {
+	    document.getElementById("logout_form").submit();
+	}
+	document.getElementById("home_btn").onclick = function() {
+	    document.getElementById("home_form").submit();
+	}
+</script>
 </html>

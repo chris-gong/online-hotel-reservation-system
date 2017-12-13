@@ -5,8 +5,16 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Admin page</title>
+<style > <jsp:include page = "navBarStyle.jsp"/> </style>
 </head>
 <body>
+<ul>
+	<li>
+		<form id="logout_form" method="post" action="Logout">
+			<a id="logout_btn" href="javascript:void(0)">Logout</a>
+		</form>
+	</li>
+	</ul>
 <script>
 
 	/*function setMin(){
@@ -71,14 +79,13 @@
 
 </form>
 <br>
-<a href="http://localhost:8080/HotelReservations/index.jsp" class="button">Logout</a>
 
 
 <script>
 
-	document.getElementById("indate").onchange = function(){checkDate()};
-	document.getElementById("outdate").onchange = function(){checkDate()};
-	function checkDate(){
+	//document.getElementById("inDate").onchange = function(){checkDate()};
+//	document.getElementById("outDate").onchange = function(){checkDate()};
+	/*function checkDate(){
 		
 		var indate = document.getElementById("indate").value;
 		var inVarDate = new Date (indate);
@@ -93,7 +100,15 @@
 			alert ("Invalid date range. Check out date has to be after check in date");
 			document.forms["dateinput"].reset();
 		}
-	}
+	}*/
 </script>
 </body>
+<script>
+	document.getElementById("logout_btn").onclick = function() {
+	    document.getElementById("logout_form").submit();
+	}
+	document.getElementById("home_btn").onclick = function() {
+	    document.getElementById("home_form").submit();
+	}
+</script>
 </html>

@@ -8,9 +8,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Make your review!</title>
+<style > <jsp:include page = "navBarStyle.jsp"/> </style>
+
 </head>
 <body>
-
+<jsp:include page="navbar.jsp"/>
 If there is nothing listed underneath, that's means a review already exists. 
 
 <h1>Select which breakfast you want to review for invoice # ${invoiceNum} </h1>
@@ -55,6 +57,13 @@ If there is nothing listed underneath, that's means a review already exists.
 	</c:forEach>
 </div>
 
-
 </body>
+<script>
+	document.getElementById("logout_btn").onclick = function() {
+	    document.getElementById("logout_form").submit();
+	}
+	document.getElementById("home_btn").onclick = function() {
+	    document.getElementById("home_form").submit();
+	}
+</script>
 </html>

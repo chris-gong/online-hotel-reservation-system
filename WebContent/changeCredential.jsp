@@ -10,8 +10,11 @@
 		out.print(test);
 	}
 	%></title>
+<style > <jsp:include page = "navBarStyle.jsp"/> </style>
+
 </head>
 <body>
+<jsp:include page="navbar.jsp"/>
 
 <% 
 if(((String)request.getAttribute("change")).equals("Password")){ %>
@@ -116,7 +119,13 @@ if(((String)request.getAttribute("change")).equals("Number")){ %>
 	window.onload = setMin;
 
 	
-	
-	
+</script>
+<script>
+	document.getElementById("logout_btn").onclick = function() {
+	    document.getElementById("logout_form").submit();
+	}
+	document.getElementById("home_btn").onclick = function() {
+	    document.getElementById("home_form").submit();
+	}
 </script>
 </html>
