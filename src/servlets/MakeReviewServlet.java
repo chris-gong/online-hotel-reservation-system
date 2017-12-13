@@ -116,8 +116,8 @@ public class MakeReviewServlet extends HttpServlet {
 		request.setAttribute("invoiceNum", invoiceNum);
 		request.setAttribute("indate", indate);
 		request.setAttribute("outdate", outdate);
-		String firsthotel = hotelid.get(0);
-		request.setAttribute("firsthotel", firsthotel);
+		//String firsthotel = hotelid.get(0);
+		//request.setAttribute("firsthotel", firsthotel);
 
 		
 		
