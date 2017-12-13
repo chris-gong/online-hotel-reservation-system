@@ -24,7 +24,11 @@ Breakfasts you ordered:
 	
 
 Services:
-	
+	<c:forEach var="b" items="${stype}">
+	   <c:out value="${s}" />
+	   <input type = "text" id = "services" value = "${s}" name = "${s}">
+	 	<br>
+	</c:forEach>
 	
 	
 	<br>
@@ -48,6 +52,33 @@ Services:
 		</form>
 	</c:forEach>
 
+</div>
+<h1>Select which service you want to review for invoice # ${invoiceNum} at hotel ${firsthotel} </h1>
+<div id="test3">
+	<c:forEach items = "${stype}" var = "s">
+		<form method = "get" action = "WriteReviewServlet">
+			<input name = "in2" id = "in2" type = "hidden" value = "${invoiceNum}">
+			<input name = "hotel" id = "hotel" type = "hidden" value = "${firsthotel}">
+			<input name = "ind" id = "ind" type = "hidden" value = "${indate}">
+			<input name = "outd" id = "outd" type = "hidden" value = "${outdate}">
+			<input type = "submit" value = "${s}" name = "service">
+			
+		</form>
+	</c:forEach>
+</div>
+
+<h1>Select which room you want to review for invoice # ${invoiceNum} at hotel ${firsthotel} </h1>
+<div id="test4">
+	<c:forEach items = "${room1}" var = "r">
+		<form method = "get" action = "WriteReviewServlet">
+			<input name = "in2" id = "in2" type = "hidden" value = "${invoiceNum}">
+			<input name = "hotel" id = "hotel" type = "hidden" value = "${firsthotel}">
+			<input name = "ind" id = "ind" type = "hidden" value = "${indate}">
+			<input name = "outd" id = "outd" type = "hidden" value = "${outdate}">
+			<input type = "submit" value = "${r}" name = "roomNumber">
+			
+		</form>
+	</c:forEach>
 </div>
 
 

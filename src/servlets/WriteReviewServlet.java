@@ -6,6 +6,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import server.LocalDbConnect;
 
@@ -28,6 +29,8 @@ public class WriteReviewServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
     String breakfasttype = "";
+    String servicetype=""; 
+    String roomnum="";
     String invoiceNum = "";
     String hotelid = "";
     String indate = "";
@@ -36,6 +39,8 @@ public class WriteReviewServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		
 		 breakfasttype = request.getParameter("breakfast");
+		 servicetype=request.getParameter("service");
+		 roomnum=request.getParameter("roomNumber");
 		//service review =request
 		
 		invoiceNum = (String) request.getParameter("in2");
@@ -46,6 +51,7 @@ public class WriteReviewServlet extends HttpServlet {
 		indate = (String) request.getParameter("ind");
 		outdate = (String) request.getParameter("outd");
 		//System.out.println("dDATES: " + indate + outdate);
+		System.out.println(servicetype);
 		
 		
 		
@@ -59,18 +65,15 @@ public class WriteReviewServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		//doGet(request, response);
-	
 		//System.out.println("breakfast type : " + breakfasttype);
 		
 		String description = request.getParameter("description");
 		String rating = request.getParameter("rating");
 		
-		//System.out.println("description: " + description);
-		//System.out.println("rating : " + rating);
-		//insert query in here
+		HttpSession session=request.getSession(true);
+		String userid= (String) session.getAttribute("user_id");
 	
 	
-		System.out.println("TEST IOASJDFLJ");
 		if (breakfasttype != null) {
 			//insert query
 			String q ="insert into breakfast_reviews(rating,text_comment,b_type,hotel_id,invoice_no,inDate,outDate) values (" +rating+", '"+ description+ "', '"+breakfasttype+ "',"+hotelid+","+invoiceNum+",'"+indate+"','"+outdate+ "')";			
@@ -78,6 +81,17 @@ public class WriteReviewServlet extends HttpServlet {
 			LocalDbConnect.executeInsertQuery(q);
 			
 		}
+		else if(servicetype!=null) {
+			String q ="insert into service_reviews(rating,text_comment,s_type,hotel_id,invoice_no,inDate,outDate) values (" +rating+", '"+ description+ "', '"+servicetype+ "',"+hotelid+","+invoiceNum+",'"+indate+"','"+outdate+ "')";			
+			LocalDbConnect.executeInsertQuery(q);
+		}
+		else if(roomnum!=null) {
+			String q="insert into room_review (rating,text_comment,room_no,hotel_id,user_id,inDate,outDate,invoice_no) values"
+					+ "("+rating+", '" +description+ "','"+roomnum+"' ,"+hotelid+","+userid+", '"+indate+"' , '"+outdate+"' ,"+invoiceNum+")";
+			System.out.println(q);
+			LocalDbConnect.executeInsertQuery(q);
+		}
+		
 		
 		
 		
