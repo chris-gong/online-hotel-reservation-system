@@ -11,35 +11,9 @@
 </head>
 <body>
 
+If there is nothing listed underneath, that's means a review already exists. 
 
-<div id = "test">
-Breakfasts you ordered:
-<form method = "post" action = "MakeReviewServlet">
-
-	<c:forEach var="b" items="${btype}">
-	   <c:out value="${b}" />
-	   <input type = "text" id = "breakfasts" value = "${b}" name = "${b}">
-	 	<br>
-	</c:forEach>
-	
-
-Services:
-	<c:forEach var="b" items="${stype}">
-	   <c:out value="${s}" />
-	   <input type = "text" id = "services" value = "${s}" name = "${s}">
-	 	<br>
-	</c:forEach>
-	
-	
-	<br>
-	<input type = "submit">
-</form>
-</div>
-
-
-<br>
-
-<h1>Select which breakfast you want to order for invoice # ${invoiceNum} at hotel ${firsthotel} </h1>
+<h1>Select which breakfast you want to review for invoice # ${invoiceNum} </h1>
 <div id = "test2">
 	<c:forEach items = "${btype}" var = "b">
 		<form method = "get" action = "WriteReviewServlet">
