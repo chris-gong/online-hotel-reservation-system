@@ -41,6 +41,10 @@
 						Type: ${room.getType()} <br>
 						Capacity: ${room.getCapacity()} <br>
 						Price: $${room.getPrice()} <br>
+						<c:set var = "discount" scope = "session" value = "${room.getDiscount()}"></c:set>
+						<c:if test= "${discount > 0}">
+							Discount: ${room.getDiscount()*100}%<br>
+						</c:if>
 					</div> 
 				</div>
 				<br>

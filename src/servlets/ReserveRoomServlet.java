@@ -116,6 +116,7 @@ public class ReserveRoomServlet extends HttpServlet {
 		}
 		request.setAttribute("cards", creditCards);
 		double cost = calculateTotalCost(requestedRoomNums,id, inDate, outDate);
+		requestedRooms = getDiscount(inDate,outDate,requestedRooms);
 		request.setAttribute("cost", cost);
 		request.getRequestDispatcher("/confirmRoom.jsp").forward(request,response);
 	}
@@ -224,7 +225,7 @@ public class ReserveRoomServlet extends HttpServlet {
 						}
 						System.out.println("Redirecting to breakfastservice servlet");
 						response.sendRedirect("/HotelReservations/BreakfastServiceSelect?invoice_no="+invoice+"&in_date="+inDate+"&out_date="
-								+"&hotel_id="+id+"&req_rooms="+reqRoomString+"&card_num="+cardNum);
+								+outDate+"&hotel_id="+id+"&req_rooms="+reqRoomString+"&card_num="+cardNum);
 					}catch(Exception e){
 						e.printStackTrace();
 					}
@@ -329,4 +330,26 @@ public class ReserveRoomServlet extends HttpServlet {
 	public int daysBetween(LocalDate d1, LocalDate d2){
         return (int) ChronoUnit.DAYS.between(d1,d2);
 }
+	public ArrayList<Room> getDiscount(String inDate, String outDate,ArrayList<Room> R ){
+		ArrayList<Room> updatedRooms = R;
+		for(Room h: updatedRooms) {
+				int hotelId = h.getId();
+				int num=h.getRoomNum();
+			String checkDiscount = "select discount from room_offers where start_date<='"+inDate+"' "
+					+ " and end_date>=+'"+outDate+"' and hotel_id='"+hotelId+"' and room_no='"+num+"'";
+			try {
+				ResultSet rs = LocalDbConnect.executeSelectQuery(checkDiscount);
+				if(rs.next()) {
+					h.setDiscount(rs.getDouble("discount"));
+				}
+				
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+			for(int i=0;i<updatedRooms.size();i++) {
+				System.out.println(updatedRooms.get(i).getDiscount());
+			}
+		}
+		return updatedRooms ;
+	}
 }

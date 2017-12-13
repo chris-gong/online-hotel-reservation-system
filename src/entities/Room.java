@@ -7,6 +7,7 @@ public class Room {
 	private int price;
 	private String description;
 	private String type;
+	private double discount = 0;
 	private int capacity;
 	public Room(int id, int roomNum, int floorNum, int price, String description, String type, int capacity) {
 		this.hotelId = id;
@@ -38,5 +39,11 @@ public class Room {
 	}
 	public int getCapacity() {
 		return capacity;
+	}
+ 	public void setDiscount(double d) {
+		discount=d;
+	}
+	public double getDiscount() {
+		return discount;
 	}
 }
