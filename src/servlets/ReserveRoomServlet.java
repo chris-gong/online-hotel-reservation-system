@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -74,15 +77,6 @@ public class ReserveRoomServlet extends HttpServlet {
 				String description = rs.getString("description");
 				String type = rs.getString("type");
 				int price = rs.getInt("price"); 
-				
-				//Checking if discount exists given in and out date.
-				 
-				
-				
-				
-				
-				
-				
 				
 				int cap = rs.getInt("capacity");
 				Room room = new Room(id, room_no, floor_num, price, description, type, cap);
@@ -275,14 +269,34 @@ public class ReserveRoomServlet extends HttpServlet {
 		return 0;
 	}
 	public double calculateTotalCost(ArrayList<String> roomNums, int hotelId, String inDate, String outDate){
-		ArrayList<Integer> prices = new ArrayList<Integer>();
+		ArrayList<Double> prices = new ArrayList<Double>();
 		//retrieve each room's cost
 		for(String num : roomNums){
 			String getCostQry = "select price from rooms where room_no = '"+num+"' and hotel_id ='"+hotelId+"';";
 			try{
 				ResultSet cost = LocalDbConnect.executeSelectQuery(getCostQry);
-				if(cost.next()){
-					prices.add(cost.getInt("price"));
+				//Checking if discount exists given in and out date.
+				String checkDiscount = "select discount from room_offers where start_date<='"+inDate+"' "
+						+ " and end_date>=+'"+outDate+"' and hotel_id='"+hotelId+"' and room_no='"+num+"'";
+				if(cost.next()) {
+					double price = cost.getDouble("price");
+				try {
+					ResultSet discRs = LocalDbConnect.executeSelectQuery(checkDiscount);
+					if(discRs.next()) {
+						//found a discount
+						double discount = discRs.getDouble("discount");
+						System.out.println(discount);
+						double newPrice = price -(price*discount);
+						prices.add(newPrice);
+					}else {
+						//no discount
+						prices.add(price);
+					}
+				}catch(Exception e) {
+					e.printStackTrace();
+				}
+				
+				
 				}
 			}
 			catch(Exception e){
@@ -295,20 +309,24 @@ public class ReserveRoomServlet extends HttpServlet {
 		try {
 			Date in = sdf.parse(inDate);
 			Date out = sdf.parse(outDate);
-			days = daysBetween(in, out);
+			LocalDate inD = in.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+			LocalDate outD = out.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+			days = daysBetween(inD, outD);
+			System.out.println(days);
 			
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		int total = 0;
-		for(Integer price : prices){
+		for(Double price : prices){
 			total += days * price;
 		}
 		System.out.println(total);
 		return total;
 	}
-	public int daysBetween(Date d1, Date d2){
-        return (int)( (d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24));
+	public int daysBetween(LocalDate d1, LocalDate d2){
+        return (int) ChronoUnit.DAYS.between(d1,d2);
 }
 }
