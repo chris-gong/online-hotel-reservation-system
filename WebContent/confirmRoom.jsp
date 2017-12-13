@@ -58,7 +58,14 @@
 		<div id="card_form">
 			Name: <input type="text" name="card_name" required> <br>
 			Billing Address: <input type="text" name="card_addr" required> <br>
-			Card Number: <input type="text" name="card_num" minlength="16" required> <br>
+			Card Number: <input type="text" name="card_num" minlength="4" required>
+			<%
+				String duplMessage = (String) request.getParameter("dupl_message");
+				if(duplMessage != null){
+					out.println(duplMessage);
+				}
+			%>
+			<br>
 			Security Code: <input type="text" name="card_sec" required> <br>
 			Card Type: <input type="text" name="card_type" required> <br> 
 			Expiration Date: <input type="Date" name="card_exp_date" required> 

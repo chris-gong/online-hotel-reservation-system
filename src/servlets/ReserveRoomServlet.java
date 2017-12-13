@@ -125,6 +125,7 @@ public class ReserveRoomServlet extends HttpServlet {
 		String outDate = request.getParameter("out_date");
 		String reqRoomString = request.getParameter("req_room_string");
 		String cardNum = request.getParameter("credit_card");
+		String userId = (String) session.getAttribute("user_id");
 		
 		System.out.println(reqRoomString);
 		ArrayList<String> requestedRoomNums = mapper.readValue(reqRoomString,
@@ -156,6 +157,34 @@ public class ReserveRoomServlet extends HttpServlet {
 							"&in_date="+inDate+"&out_date="+outDate+"&req_rooms="+reqRoomString+"&exp_message="+message);
 					return;
 				}
+				//run a query that checks if the inputted cnumber already exists with the user_id
+				//in an entry in the credit_cards table
+				String cardDuplicateQry = "select count(*) as count from credit_cards "
+						+ "where c_number = '"+cardNum+"' and user_id = '"+userId+"';";
+				try{
+					ResultSet duplicateRs = LocalDbConnect.executeSelectQuery(cardDuplicateQry);
+					int count = 0;
+					if(duplicateRs.next()){
+						count = duplicateRs.getInt("count");
+						System.out.println("number of cards:" + count);
+					}
+					if(count > 0){
+						//card already exists
+						System.out.println("Card already exists");
+						String message = "Card already exists (number duplicate)";
+						response.sendRedirect("/HotelReservations/ReservedRoomSummary?hotel_id="+id+"&name="+name+
+								"&in_date="+inDate+"&out_date="+outDate+"&req_rooms="+reqRoomString+"&dupl_message="+message);
+					}
+					else{
+						//add the card into the database
+						System.out.println("adding card into the database");
+						String insertCardQry ="insert into credit_cards(exp_date,type,sec_code,name,billing_addr,c_number,user_id) "
+								+ "values('"+cardExpDate+"','"+cardType+"','"+cardSec+"','"+cardName+"','"+cardAddress+"','"+cardNum+"','"+userId+"');";
+						int cardInserted = LocalDbConnect.executeInsertQuery(insertCardQry);
+					}
+				}catch(Exception e){
+					e.printStackTrace();
+				}
 			}catch(Exception e){
 				e.printStackTrace();
 			}
@@ -173,7 +202,6 @@ public class ReserveRoomServlet extends HttpServlet {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			String todayDate = sdf.format(today);
 			System.out.println(todayDate);
-			String userId = (String) session.getAttribute("user_id");
 			String insertResQry = "insert into reservations (Res_Date,user_id,c_number) values('"+todayDate+"'"
 					+ ",'"+userId+"','"+cardNum+"');";
 			try{
@@ -203,6 +231,7 @@ public class ReserveRoomServlet extends HttpServlet {
 		else{
 			//if there are conflicting entries in res_details table
 			//don't make any entries in reservations and res_details entries
+			//and tell the user that the rooms can not be reserved
 		}
 		
 	}
