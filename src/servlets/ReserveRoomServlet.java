@@ -74,6 +74,16 @@ public class ReserveRoomServlet extends HttpServlet {
 				String description = rs.getString("description");
 				String type = rs.getString("type");
 				int price = rs.getInt("price"); 
+				
+				//Checking if discount exists given in and out date.
+				 
+				
+				
+				
+				
+				
+				
+				
 				int cap = rs.getInt("capacity");
 				Room room = new Room(id, room_no, floor_num, price, description, type, cap);
 				System.out.println(room);
@@ -220,7 +230,7 @@ public class ReserveRoomServlet extends HttpServlet {
 						}
 						System.out.println("Redirecting to breakfastservice servlet");
 						response.sendRedirect("/HotelReservations/BreakfastServiceSelect?invoice_no="+invoice+"&in_date="+inDate+"&out_date="
-								+"&hotel_id"+id+"&=req_rooms"+reqRoomString+"&card_num="+cardNum);
+								+"&hotel_id="+id+"&req_rooms="+reqRoomString+"&card_num="+cardNum);
 					}catch(Exception e){
 						e.printStackTrace();
 					}
