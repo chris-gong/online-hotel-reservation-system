@@ -145,6 +145,7 @@ public class BreakfastServiceServlet extends HttpServlet {
 		System.out.println(breakfastString + " " + serviceString);
 		int totalBreakfastCount = 0;
 		int totalServiceCount = 0;
+		int totalCost = 0;
 		//arraylist of json strings which in themselves represent
 		//arrays containing two things, type and quantity
 		ArrayList<String> breakfasts = mapper.readValue(breakfastString,
@@ -159,8 +160,11 @@ public class BreakfastServiceServlet extends HttpServlet {
 					TypeFactory.defaultInstance().constructCollectionType(List.class, String.class)); 
 			//filter out underscores in breakfast or service types
 			String bType = breakfastObj.get(0).replaceAll("_", " ");
-			Breakfast breakfast = new Breakfast(bType, Integer.parseInt(breakfastObj.get(2)), null);
-			breakfast.setTimesOrdered(Integer.parseInt(breakfastObj.get(1)));
+			int cost = Integer.parseInt(breakfastObj.get(2));
+			int orderCount = Integer.parseInt(breakfastObj.get(1));
+			Breakfast breakfast = new Breakfast(bType, cost, null);
+			breakfast.setTimesOrdered(orderCount);
+			totalCost += cost * orderCount;
 			breakfastReqs.add(breakfast);
 		}
 		for(String s : services){
@@ -168,8 +172,11 @@ public class BreakfastServiceServlet extends HttpServlet {
 					TypeFactory.defaultInstance().constructCollectionType(List.class, String.class)); 
 			//filter out underscores in breakfast or service types
 			String sType = serviceObj.get(0).replaceAll("_", " ");
-			Service service = new Service(sType, Integer.parseInt(serviceObj.get(2)));
-			service.setTimesOrdered(Integer.parseInt(serviceObj.get(1)));
+			int cost = Integer.parseInt(serviceObj.get(2));
+			int orderCount = Integer.parseInt(serviceObj.get(1));
+			Service service = new Service(sType, cost);
+			service.setTimesOrdered(orderCount);
+			totalCost += cost * orderCount;
 			serviceReqs.add(service);
 		}
 		for(Breakfast b : breakfastReqs){
@@ -189,6 +196,16 @@ public class BreakfastServiceServlet extends HttpServlet {
 		}
 		else{
 			//take the user to a review summary page for the breakfasts and services he/she ordered
+			String breakfastReqString = mapper.writeValueAsString(breakfastReqs);
+			String serviceReqString = mapper.writeValueAsString(serviceReqs);
+			request.setAttribute("breakfastReqString", breakfastReqString);
+			request.setAttribute("serviceReqString", serviceReqString);
+			request.setAttribute("hotelId", hotelId);
+			request.setAttribute("invoice", invoice);
+			request.setAttribute("breakfast_reqs", breakfastReqs);
+			request.setAttribute("service_reqs", serviceReqs);
+			request.setAttribute("total_cost", totalCost);
+			request.getRequestDispatcher("/confirmBreakfastService.jsp").forward(request,response);
 		}
 	}
 	public int daysBetween(LocalDate d1, LocalDate d2){
