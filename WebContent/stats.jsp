@@ -109,7 +109,7 @@
 
 		<table id="t3" border="1" style="float: left;">
 			<tr>
-				<th>BType</th>
+				<th>SType</th>
 				<c:forEach items="${b_type4}" var="type">
 					<tr>
 						<td>${type}</td>
