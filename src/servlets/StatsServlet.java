@@ -3,14 +3,24 @@ package servlets;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import entities.Customer;
 import server.LocalDbConnect;
 
 /**
@@ -42,8 +52,84 @@ public class StatsServlet extends HttpServlet {
 		String inDate = "'" + temp1 + "'";
 		String outDate = "'" + temp2 + "'";
 		System.out.println(inDate + " " + outDate);
+
+		ArrayList<Customer> customers = new ArrayList<Customer> ();
+		HttpSession sesh = request.getSession(true);
 		
+		ArrayList<String> userIds = new ArrayList<String>();
 		
+		String h1 = "select user_id from users";
+		//String h2 = 
+		
+		ResultSet hresult = LocalDbConnect.executeSelectQuery(h1);
+		try {
+			while (hresult.next()) {
+				String userid = hresult.getString("user_id");
+				String h2 = "select user_id, invoice_no from reservations where user_id =  '" + userid + "'";
+				ResultSet h2result = LocalDbConnect.executeSelectQuery(h2);
+				
+				while (h2result.next()) {
+					String invoiceNo = h2result.getString("invoice_no");
+					
+					String h3 = "select in_date, out_date, room_no, hotel_id from res_details where invoice_no = '"+invoiceNo+"'";
+					
+					ResultSet h3result = LocalDbConnect.executeSelectQuery(h3);
+					while(h3result.next()) {
+						String hinDate = h3result.getString("in_date");
+						String houtDate = h3result.getString("out_date");
+						//get the number of days between the indate and outdate
+						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+						int days = 0;
+						try {
+							Date in = sdf.parse(hinDate);
+							Date out = sdf.parse(houtDate);
+							LocalDate inD = in.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+							LocalDate outD = out.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+							days = daysBetween(inD, outD);
+							System.out.println(days);
+							
+						} catch (ParseException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						String room_no = h3result.getString("room_no");
+						String hotel_id = h3result.getString("hotel_id");
+						String h4 = "select price from rooms where hotel_id = '"+hotel_id+"' and room_no = '"+room_no+"'";
+						ResultSet h4result = LocalDbConnect.executeSelectQuery(h4);
+						int price = 0;
+						if(h4result.next()) {
+							price = h4result.getInt("price");
+						}
+						int total = price * days;
+						boolean alreadyExists = false;
+						Customer cust = null;
+						for(Customer c : customers) {
+							if(c.getUserId() == Integer.parseInt(userid)) {
+								alreadyExists = true;
+								cust = c;
+								break;
+							}
+						}
+						if(alreadyExists) {
+							cust.spendMore(total);
+						}
+						else {
+							customers.add(new Customer(total,Integer.parseInt(userid)));
+						}
+					}
+					
+					
+				}
+				
+				
+			}
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		Collections.sort((List<Customer>) customers);
+		request.setAttribute("customers", customers);
 		String query1 = "\n" + 
 				"\n" + 
 				"Select t4.type, t6.hotel_id, t6.maxAV from\n" + 
@@ -65,6 +151,9 @@ public class StatsServlet extends HttpServlet {
 				")t5\n" + 
 				"group by t5.type, t5.hotel_id)t4\n" + 
 				"on( t6.hotel_id=t4.hotel_id AND t6.maxAV=t4.av)";
+		
+		
+		
 		
 		
 		String query3 = "Select t4.b_type,t4.hotel_id,t5.mx from \n" + 
@@ -208,5 +297,7 @@ public class StatsServlet extends HttpServlet {
 		
 		
 	}
-
+	public int daysBetween(LocalDate d1, LocalDate d2){
+        return (int) ChronoUnit.DAYS.between(d1,d2);
+}
 }

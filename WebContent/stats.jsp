@@ -23,7 +23,13 @@
 	</ul>
 
 	<br>
-
+	Top 5 customers by userId
+	<br>
+	
+	
+	<c:forEach items="${customers}" var="c">
+		${c.getUserId()} <br>
+	</c:forEach>
 	<div id="firstquery">
 		<table border="1" style="float: left;">
 			<th>HotelID</th>
