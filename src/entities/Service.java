@@ -8,6 +8,10 @@ public class Service {
 		this.type = type;
 		this.price = price;
 	}
+	//dummy constructor needed for json parsing in jackson library
+	public Service(){
+		
+	}
 	public String getType(){
 		return type;
 	}

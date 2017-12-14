@@ -5,7 +5,7 @@
 <head>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Member Home</title>
 <style > <jsp:include page = "navBarStyle.jsp"/> </style>
@@ -14,8 +14,12 @@
 	<jsp:include page="navbar.jsp"/>
 	Welcome: <%
 	String test =(String)request.getAttribute("name");
+	String confirmationMsg = (String)request.getParameter("confirmation");
 	if(test!=null){
-		out.print(test);
+		out.println(test + "<br>");
+	}
+	if(confirmationMsg!=null){
+		out.println(confirmationMsg);
 	}
 	%>
 

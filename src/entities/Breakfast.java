@@ -11,6 +11,10 @@ public class Breakfast {
 		this.price = price;
 		this.description = description;
 	}
+	//dummy constructor needed for json parsing in jackson library
+	public Breakfast(){
+		
+	}
 	public String getType(){
 		return type;
 	}

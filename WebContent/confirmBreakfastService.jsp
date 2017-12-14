@@ -22,6 +22,10 @@
 </head>
 <body>
 	<form method="post" action="BreakfastServiceSummary">
+		<input type="text" name="invoice_no" value="${invoice_no}" hidden>
+		<input type="text" name="breakfast_req_string" value='${breakfast_req_string}' hidden>
+		<input type="text" name="service_req_string" value='${service_req_string}' hidden>
+		<input type="text" name="hotel_id" value="${hotel_id}" hidden>
 		<div class="container-fluid">
 			<div class="row"> 
 				<div class="col-6 center-block text-center">
@@ -34,7 +38,7 @@
 			<div class="row">
 				<div class="breakfast_summary col-6">
 					<c:forEach items="${breakfast_reqs}" var="breakfast">
-						${breakfast.getTimesOrdered()} orders of ${breakfast.getType()} at $${breakfast.getPrice()} each
+						${breakfast.getTimesOrdered()} orders of ${breakfast.getType()} at $${breakfast.getPrice()} each <br>
 					</c:forEach>
 				</div>
 				<div class="service_summary col-6">

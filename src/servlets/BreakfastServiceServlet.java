@@ -198,10 +198,10 @@ public class BreakfastServiceServlet extends HttpServlet {
 			//take the user to a review summary page for the breakfasts and services he/she ordered
 			String breakfastReqString = mapper.writeValueAsString(breakfastReqs);
 			String serviceReqString = mapper.writeValueAsString(serviceReqs);
-			request.setAttribute("breakfastReqString", breakfastReqString);
-			request.setAttribute("serviceReqString", serviceReqString);
-			request.setAttribute("hotelId", hotelId);
-			request.setAttribute("invoice", invoice);
+			request.setAttribute("breakfast_req_string", breakfastReqString);
+			request.setAttribute("service_req_string", serviceReqString);
+			request.setAttribute("hotel_id", hotelId);
+			request.setAttribute("invoice_no", invoice);
 			request.setAttribute("breakfast_reqs", breakfastReqs);
 			request.setAttribute("service_reqs", serviceReqs);
 			request.setAttribute("total_cost", totalCost);
