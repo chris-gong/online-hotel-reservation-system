@@ -39,7 +39,7 @@ public class MakeReviewServlet extends HttpServlet {
 		String id = (String) session.getAttribute("user_id");
 		int idNum = Integer.parseInt(id);
 		System.out.println("id " + idNum);
-		System.out.println("asdasd");
+		//System.out.println("asdasd");
 		String invoiceNum = (String) request.getAttribute("invoiceNum");
 		System.out.println("Invoice num 1 " + invoiceNum);
 	
@@ -54,19 +54,25 @@ public class MakeReviewServlet extends HttpServlet {
 		String rquery = "select distinct * from res_details where invoice_no= " + invoiceNum + " AND \n" + 
 				"room_no not in\n" + 
 				"(select room_no from room_review where invoice_no= " + invoiceNum + " )";
-	
+		
+		String hotelQuery = "select distinct (hotel_id) from res_details where invoice_no = " + invoiceNum;
 				
 				
 		ResultSet breakfasts = LocalDbConnect.executeSelectQuery(bquery);
 		ResultSet services=LocalDbConnect.executeSelectQuery(squery);
 		ResultSet rooms=LocalDbConnect.executeSelectQuery(rquery);
+		ResultSet hotels = LocalDbConnect.executeSelectQuery(hotelQuery);
 		String datesq = "select in_date ,out_date from res_details where invoice_no=" + invoiceNum;
 		ResultSet dates = LocalDbConnect.executeSelectQuery(datesq);
 		String indate = "", outdate = "";
+		String hotelid = "";
 		try {
 			dates.next();
 			 indate = dates.getString("in_date");
 			 outdate = dates.getString("out_date");
+			 
+			 hotels.next();
+			 hotelid = hotels.getString("hotel_id");
 
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
@@ -76,12 +82,12 @@ public class MakeReviewServlet extends HttpServlet {
 		//System.out.println("indate: " + indate);
 		//System.out.println("outdate " + outdate);
 		
-
+		System.out.println("MakeReviewServlet hotelid: " + hotelid);
 		
 		ArrayList <String> btype = new ArrayList<String>();
 		ArrayList <String> stype=new ArrayList<String>();
 		ArrayList <String> room1=new ArrayList<String>();
-		ArrayList <String> hotelid = new ArrayList<String>();
+		//ArrayList <String> hotelid = new ArrayList<String>();
 		//ArrayList <String> timesordered = new ArrayList<String>();
 		
 
@@ -91,7 +97,7 @@ public class MakeReviewServlet extends HttpServlet {
 				//request.setAttribute("type", first.getString("type"));
 				
 				btype.add(breakfasts.getString("b_type"));
-				hotelid.add(breakfasts.getString("hotel_id"));
+				//hotelid.add(breakfasts.getString("hotel_id"));
 				//timesordered.add(breakfasts.getString("times_ordered"));
 			}
 			while(services.next()) {
@@ -111,13 +117,13 @@ public class MakeReviewServlet extends HttpServlet {
 		request.setAttribute("btype", btype);
 		request.setAttribute("stype", stype);
 		request.setAttribute("room1", room1);
-		request.setAttribute("hotelid", hotelid);
+		//request.setAttribute("hotelid", hotelid);
 		//request.setAttribute("timesordered", timesordered);
 		request.setAttribute("invoiceNum", invoiceNum);
 		request.setAttribute("indate", indate);
 		request.setAttribute("outdate", outdate);
 		//String firsthotel = hotelid.get(0);
-		//request.setAttribute("firsthotel", firsthotel);
+		request.setAttribute("firsthotel", hotelid);
 
 		
 		
