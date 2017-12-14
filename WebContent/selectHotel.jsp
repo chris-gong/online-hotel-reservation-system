@@ -8,6 +8,7 @@
 <title>Select Hotel</title>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
 <style > <jsp:include page = "navBarStyle.jsp"/> </style>
 
 </head>
