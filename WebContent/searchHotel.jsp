@@ -179,8 +179,10 @@
 				//add rooms
 				var rooms_to_add = $(this).val() - room_count;
 				for(i = 0; i < rooms_to_add; i++){
-					var room_num = (room_count+i+1);
-					$('#rooms .room_info').last().append('<div class="room_info"><label style="padding-right:4.5em;">Room'+room_num+': </label><select class="num_people" name="num_people" ><c:forEach begin="1" end="4" varStatus="loop"><option value="${loop.index}">${loop.index}</option></c:forEach></select></div>');
+					console.log(room_count);
+					var room_num = parseInt(room_count)+i+1;
+					console.log(room_num);
+					$('#rooms .room_info').last().append('<div class="room_info"><label style="padding-right:4.5em;">Room '+room_num+': </label><select class="num_people" name="num_people" ><c:forEach begin="1" end="4" varStatus="loop"><option value="${loop.index}">${loop.index}</option></c:forEach></select></div>');
 				}
 			}
 			else{
@@ -194,9 +196,6 @@
 		});
 	});
 	
-	
-	document.getElementById("inDate").onchange = function(){checkDate();};
-	document.getElementById("outDate").onchange = function(){checkDate();};
 	function checkDate(){
 		
 		var indate = document.getElementById("indate").value;
@@ -214,6 +213,9 @@
 			$("#outdate").val('');
 		}
 	}
+	document.getElementById("inDate").onchange = function(){checkDate();};
+	document.getElementById("outDate").onchange = function(){checkDate();};
+	
 </script>
 <script>
 	document.getElementById("logout_btn").onclick = function() {
